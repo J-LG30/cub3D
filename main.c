@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 17:06:58 by jle-goff          #+#    #+#             */
-/*   Updated: 2024/07/22 17:03:33 by jle-goff         ###   ########.fr       */
+/*   Updated: 2024/07/23 17:09:05 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ void	draw_player(t_img *player, int x, int y, int colour)
 	//mlx_put_image_to_window(player->win->mlx_ptr, player->win->win_ptr, player->img_ptr, 0, 0);	
 }
 
+//check the up down keycodes bc thats weird
 int key_press(int keycode, void *param)
 {
     t_img   *image;
@@ -57,18 +58,18 @@ int key_press(int keycode, void *param)
 	int		map_ipos;
 	int		map_jpos;
 
-	printf("%i", keycode);
+	printf("%i\n", keycode);
 	game = (t_game *)param;
-	//draw_player(game->player->img, game->player->x, game->player->y, 0xFFFFFFFF);
-    if (keycode == RIGHT && game->player->x + SIZE <= game->win->width)
+	mlx_put_image_to_window(game->win->mlx_ptr, game->win->win_ptr, game->bgd->img_ptr,
+		game->player->x * SIZE, game->player->y * SIZE);
+    if (keycode == RIGHT && game->map[game->player->y][game->player->x + 1] != '1')
 		game->player->x++;
-	if (keycode == LEFT && game->player->x - SIZE >= 0)
+	if (keycode == LEFT && game->map[game->player->y][game->player->x - 1] != '1')
 		game->player->x--;
-	if (keycode == UP)
+	if (keycode == UP && game->map[game->player->y - 1][game->player->x] != '1')
 		game->player->y--;
-	if (keycode == DOWN)
+	if (keycode == DOWN && game->map[game->player->y + 1][game->player->x] != '1')
 		game->player->y++;
-	mlx_put_image_to_window(game->win->mlx_ptr, game->win->win_ptr, game->bgd->img_ptr, 0, 0);
 	mlx_put_image_to_window(game->win->mlx_ptr, game->win->win_ptr, game->player->img->img_ptr,
 		game->player->x * SIZE, game->player->y * SIZE);
     return (0);
@@ -81,28 +82,53 @@ int	main(void)
 	t_img		bgd;
 	t_img		player_img;
 	t_game		game;
+	t_img		wall;
 
-	win.width = 1080;
-	win.height = 724;
+	open_map("test_map.txt", &game);
+
+	win.width = 1280;
+	win.height = 768;
 	game.player = &player;
 	game.win = &win;
 	game.bgd = &bgd;
 
 	bgd.win = &win;
 
-	player.x = 0;
-	player.y = 0;
-
 	win.mlx_ptr = mlx_init();
 	win.win_ptr = mlx_new_window(win.mlx_ptr, 1024, 768, "Hello world!");
 	
-	bgd = new_sprite(win.mlx_ptr, win.width, win.height);
+	wall = new_sprite(win.mlx_ptr, SIZE, SIZE);
 	player_img = new_sprite(win.mlx_ptr, SIZE, SIZE);
+	bgd = new_sprite(win.mlx_ptr, SIZE, SIZE);
 	player.img = &player_img;
 
-	draw_player(&player_img, player.x, player.y, 0x00FF0000);
-	mlx_put_image_to_window(win.mlx_ptr, win.win_ptr, player.img->img_ptr, 0, 0);	
-	mlx_key_hook(win.win_ptr, &key_press, &game);
+	int	i = 0;
+	int	j = 0;
+	draw_player(&wall, 0, 0, 0xFFFFFF);
+	draw_player(&bgd, 0, 0, 0x000000);
+	draw_player(&player_img, 0, 0, 0x00FF0000);
+	while (game.map[i])
+	{
+		j = 0;
+		while (game.map[i][j] != '\0')
+		{
+			if (game.map[i][j] == '1')
+			{
+				mlx_put_image_to_window(win.mlx_ptr, win.win_ptr, wall.img_ptr, j * SIZE, i * SIZE);
+			}
+			if (game.map[i][j] == 'P')
+			{
+				player.x = j;
+				player.y = i;
+			}
+			j++;
+		}
+		i++;
+	}
+	printf("Player x position: %i\n", player.x);
+	printf("Player y position: %i\n", player.y);
+	mlx_put_image_to_window(win.mlx_ptr, win.win_ptr, player.img->img_ptr, player.x * SIZE, player.y * SIZE);	
+	mlx_hook(win.win_ptr, 2, 1L<<0, key_press, &game);
 	mlx_loop(win.mlx_ptr);
 	return (0);
 }

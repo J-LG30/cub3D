@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 17:08:08 by jle-goff          #+#    #+#             */
-/*   Updated: 2024/07/21 18:36:10 by jle-goff         ###   ########.fr       */
+/*   Updated: 2024/07/23 17:00:57 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,10 @@
 
 #include "minilibx_opengl/mlx.h"
 #include <stdio.h>
+#include <fcntl.h>
+#include "libft/libft.h"
 
-#define SIZE 30
+#define SIZE 16
 
 #if defined(__APPLE__) && defined(__MACH__)
 	#define ESC 53
@@ -78,9 +80,10 @@ typedef struct s_game
 	t_win		*win;
 	t_img		*bgd;
 	t_player	*player;
+	char		**map;
 }	t_game;
 
-
+void	open_map(char *path, t_game *game);
 
 #endif
 

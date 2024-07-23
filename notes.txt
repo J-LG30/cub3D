@@ -1,0 +1,8 @@
+grid of 64x64 tiles
+
+Todo:
+Basic 2d map:
+check if map has unknown characters
+check if map is closed
+
+shoot ray from player (N S E W)

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+         #
+#    By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/21 17:10:34 by jle-goff          #+#    #+#              #
-#    Updated: 2024/07/21 17:11:31 by jle-goff         ###   ########.fr        #
+#    Updated: 2024/07/23 15:35:32 by rafasant         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,22 +26,30 @@ endif
 
 MLX = $(MLX_DIR)/libmlx.a
 
-SRCS = main.c
+SRCS = main.c map.c
 
 OBJS = $(SRCS:.c=.o)
 
+LIBFT_DIR = ./libft
+LIBFT_A = $(LIBFT_DIR)/libft.a
+
 all: $(NAME)
 
-$(NAME): $(OBJS) $(MLX)
-	@$(CC) $(FLAGS) $(OBJS) $(MLX) $(INCLUDE) -o $(@)
+$(NAME): $(OBJS) $(LIBFT_A) $(MLX)
+	@$(CC) $(FLAGS) $(OBJS) $(LIBFT_A) $(MLX) $(INCLUDE) -o $(@)
+
+$(LIBFT_A):
+	@$(MAKE) --no-print-directory -C $(LIBFT_DIR)
 
 $(MLX):
 	@$(MAKE) --no-print-directory -C $(MLX_DIR)
 clean:
 	@rm -f $(OBJS)
+	@$(MAKE) --no-print-directory -C $(LIBFT_DIR) clean
 
 fclean: clean
 	@rm -f $(NAME)
+	@$(MAKE) --no-print-directory -C $(LIBFT_DIR) fclean
 
 re: fclean all
 
