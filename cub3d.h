@@ -3,17 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 17:08:08 by jle-goff          #+#    #+#             */
-/*   Updated: 2024/07/24 13:45:30 by jle-goff         ###   ########.fr       */
+/*   Updated: 2024/07/24 16:32:44 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
 # define CUB3D_H
 
-#include "minilibx_opengl/mlx.h"
 #include <stdio.h>
 #include <fcntl.h>
 #include "libft/libft.h"
@@ -34,6 +33,7 @@
 	#define DOWN 125
 	#define RIGHT 124
 	#define FRAMES 20
+	#include "minilibx_opengl/mlx.h"
 
 #else
 	#define ESC 65307
@@ -46,6 +46,7 @@
 	#define DOWN 65364
 	#define RIGHT 65363
 	#define FRAMES 6000
+	#include "minilibx-linux/mlx.h"
 #endif
 
 typedef struct  s_win
@@ -73,6 +74,7 @@ typedef struct s_img
 typedef struct s_player
 {
 	t_img	*img;
+	t_img	*dir_line;
 	double	posX;
 	double	posY;
 	double	dirX;

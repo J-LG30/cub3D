@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 17:06:58 by jle-goff          #+#    #+#             */
-/*   Updated: 2024/07/24 13:43:54 by jle-goff         ###   ########.fr       */
+/*   Updated: 2024/07/24 17:30:46 by rafasant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,36 @@ void	my_mlx_pixel_put(t_img *data, int x, int y, int colour)
 	*(unsigned int*)dst = colour;
 }
 
-void	draw_player(t_img *player, int x, int y, int colour)
+void	draw_line(t_img	*img, int x, int y, int colour, t_player *player)
+{
+	int	i;
+	int	j;
+
+	i = x;
+	j = y;
+	printf("a\n");
+	printf("dirY %f\n", player->dirY);
+	printf("dirX %f\n", player->dirX);
+	printf("i %i", i);
+	printf("j %i", j);
+	while (i < (x * SIZE) + SIZE && i > 0)
+	{
+		j = y;
+		while (j < (y * SIZE) + SIZE && j > 0)
+		{
+			my_mlx_pixel_put(img, i, j, colour);
+			j++;
+			j *= player->dirY;
+		}
+		printf("in here\n");
+		i++;
+		i *= player->dirX;
+		printf("i is now %i", i);
+	}
+}
+
+//draws square image
+void	draw_img(t_img *img, int x, int y, int colour)
 {
 	int	i;
 	int	j;
@@ -42,33 +71,11 @@ void	draw_player(t_img *player, int x, int y, int colour)
 		j = y;
 		while (j < (y * SIZE) + SIZE)
 		{
-			my_mlx_pixel_put(player, i, j, colour);
+			my_mlx_pixel_put(img, i, j, colour);
 			j++;
 		}
 		i++;
 	}
-}
-
-void draw_line(void *mlx_ptr, void *win_ptr, int x0, int y0, int x1, int y1) {
-    int dx = abs(x1 - x0);
-    int dy = abs(y1 - y0);
-    int sx = (x0 < x1) ? 1 : -1;
-    int sy = (y0 < y1) ? 1 : -1;
-    int err = dx - dy;
-
-    while (1) {
-        mlx_pixel_put(mlx_ptr, win_ptr, x0, y0, 0xFFFFFF); // Draw pixel (color is white)
-        if (x0 == x1 && y0 == y1) break;
-        int e2 = 2 * err;
-        if (e2 > -dy) {
-            err -= dy;
-            x0 += sx;
-        }
-        if (e2 < dx) {
-            err += dx;
-            y0 += sy;
-        }
-    }
 }
 
 //check the up down keycodes bc thats weird
@@ -83,25 +90,25 @@ int key_press(int keycode, void *param)
 	game = (t_game *)param;
 	mlx_put_image_to_window(game->win->mlx_ptr, game->win->win_ptr, game->bgd->img_ptr,
 		game->player->posX * SIZE, game->player->posY * SIZE);
-    if (keycode == D)//&& game->map[game->player->posY][game->player->posX + 1] != '1')
+    if (keycode == S)//&& game->map[game->player->posY][game->player->posX + 1] != '1')
 	{
 		game->player->posX += game->player->dirX;
 		game->player->posY += game->player->dirY;
 	}
-	if (keycode == A)//&& game->map[game->player->posY][game->player->posX - 1] != '1')
+	if (keycode == W)//&& game->map[game->player->posY][game->player->posX - 1] != '1')
 	{
 		game->player->posX -= game->player->dirX;
 		game->player->posY -= game->player->dirY;
 	}
-	if (keycode == W)//&& game->map[game->player->posY - 1][game->player->posX] != '1')
+	if (keycode == D) // Strafe Right aka find perpendicular vector with 90 degree clockwise rotation
 	{
-		game->player->posX += game->player->dirX;
-		game->player->posY -= game->player->dirY;
+		game->player->posX += game->player->dirY; // Move rightward along the X axis
+		game->player->posY -= game->player->dirX; // Move rightward along the Y axis
 	}
-	if (keycode == S)//&& game->map[game->player->posY + 1][game->player->posX] != '1')
+	if (keycode == A) // Strafe Left aka find perpendicular vector with 90 degree anti-clockwise rotation
 	{
-		game->player->posX -= game->player->dirX;
-		game->player->posY += game->player->dirY;
+		game->player->posX -= game->player->dirY; // Move leftward along the X axis
+		game->player->posY += game->player->dirX; // Move leftward along the Y axis
 	}
 	if (keycode == LEFT) {
         double oldDirX = game->player->dirX;
@@ -120,11 +127,6 @@ int key_press(int keycode, void *param)
          game->player->planeY = oldPlaneX * sin(ROT_SPEED) +  game->player->planeY * cos(ROT_SPEED);
     }
 
-	int line_end_x = game->player->posX * SIZE + game->player->dirX * 32;
-    int line_end_y = game->player->posY * SIZE + game->player->dirY * 32;
-	
-	draw_line(game->win->mlx_ptr, game->win->win_ptr, game->player->posX * SIZE, game->player->posY * SIZE, line_end_x, line_end_y);
-	
 	mlx_put_image_to_window(game->win->mlx_ptr, game->win->win_ptr, game->player->img->img_ptr,
 		game->player->posX * SIZE, game->player->posY * SIZE);
     return (0);
@@ -138,6 +140,7 @@ int	main(void)
 	t_img		player_img;
 	t_game		game;
 	t_img		wall;
+	t_img		dir_line;
 
 	open_map("test_map.txt", &game);
 
@@ -155,22 +158,22 @@ int	main(void)
 	wall = new_sprite(win.mlx_ptr, SIZE, SIZE);
 	player_img = new_sprite(win.mlx_ptr, SIZE, SIZE);
 	bgd = new_sprite(win.mlx_ptr, SIZE, SIZE);
+	dir_line = new_sprite(win.mlx_ptr, SIZE, SIZE);
 	player.img = &player_img;
+	player.dir_line = &dir_line;
 
 	int	i = 0;
 	int	j = 0;
-	draw_player(&wall, 0, 0, 0xFFFFFF);
-	draw_player(&bgd, 0, 0, 0x000000);
-	draw_player(&player_img, 0, 0, 0x00FF0000);
+	draw_img(&wall, 0, 0, 0xFFFFFF);
+	draw_img(&bgd, 0, 0, 0x000000);
+	draw_img(&player_img, 0, 0, 0x00FF0000);
 	while (game.map[i])
 	{
 		j = 0;
 		while (game.map[i][j] != '\0')
 		{
 			if (game.map[i][j] == '1')
-			{
 				mlx_put_image_to_window(win.mlx_ptr, win.win_ptr, wall.img_ptr, j * SIZE, i * SIZE);
-			}
 			if (game.map[i][j] == 'N' || game.map[i][j] == 'W' || game.map[i][j] == 'S' || game.map[i][j] == 'E')
 			{
 				player.posX = j;
@@ -200,8 +203,10 @@ int	main(void)
 		}
 		i++;
 	}
-	printf("Player x position: %i\n", player.posX);
-	printf("Player y position: %i\n", player.posY);
+	draw_line(&dir_line, player.posX, player.posY, 0x00FF0000, &player);
+	mlx_put_image_to_window(win.mlx_ptr, win.win_ptr, dir_line.img_ptr, player.posX * SIZE + SIZE / 2, player.posY * SIZE - SIZE / 2);
+	player.planeX = 0;
+	player.planeY = 0.66;
 	mlx_put_image_to_window(win.mlx_ptr, win.win_ptr, player.img->img_ptr, player.posX * SIZE, player.posY * SIZE);	
 	mlx_hook(win.win_ptr, 2, 1L<<0, key_press, &game);
 	mlx_loop(win.mlx_ptr);

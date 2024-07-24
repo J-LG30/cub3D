@@ -6,13 +6,13 @@
 #    By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/21 17:10:34 by jle-goff          #+#    #+#              #
-#    Updated: 2024/07/23 15:35:32 by rafasant         ###   ########.fr        #
+#    Updated: 2024/07/24 14:45:44 by rafasant         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = cub3d
 CC = @cc
-FLAGS = -Wall -Wextra -Werror
+FLAGS = -Wall -Wextra -Werror -lm
 
 UNAME = $(shell uname -s)
 
