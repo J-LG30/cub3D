@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 17:06:58 by jle-goff          #+#    #+#             */
-/*   Updated: 2024/07/23 17:09:05 by rafasant         ###   ########.fr       */
+/*   Updated: 2024/07/24 13:43:54 by jle-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,28 @@ void	draw_player(t_img *player, int x, int y, int colour)
 		}
 		i++;
 	}
-	//mlx_put_image_to_window(player->win->mlx_ptr, player->win->win_ptr, player->img_ptr, 0, 0);	
+}
+
+void draw_line(void *mlx_ptr, void *win_ptr, int x0, int y0, int x1, int y1) {
+    int dx = abs(x1 - x0);
+    int dy = abs(y1 - y0);
+    int sx = (x0 < x1) ? 1 : -1;
+    int sy = (y0 < y1) ? 1 : -1;
+    int err = dx - dy;
+
+    while (1) {
+        mlx_pixel_put(mlx_ptr, win_ptr, x0, y0, 0xFFFFFF); // Draw pixel (color is white)
+        if (x0 == x1 && y0 == y1) break;
+        int e2 = 2 * err;
+        if (e2 > -dy) {
+            err -= dy;
+            x0 += sx;
+        }
+        if (e2 < dx) {
+            err += dx;
+            y0 += sy;
+        }
+    }
 }
 
 //check the up down keycodes bc thats weird
@@ -61,17 +82,51 @@ int key_press(int keycode, void *param)
 	printf("%i\n", keycode);
 	game = (t_game *)param;
 	mlx_put_image_to_window(game->win->mlx_ptr, game->win->win_ptr, game->bgd->img_ptr,
-		game->player->x * SIZE, game->player->y * SIZE);
-    if (keycode == RIGHT && game->map[game->player->y][game->player->x + 1] != '1')
-		game->player->x++;
-	if (keycode == LEFT && game->map[game->player->y][game->player->x - 1] != '1')
-		game->player->x--;
-	if (keycode == UP && game->map[game->player->y - 1][game->player->x] != '1')
-		game->player->y--;
-	if (keycode == DOWN && game->map[game->player->y + 1][game->player->x] != '1')
-		game->player->y++;
+		game->player->posX * SIZE, game->player->posY * SIZE);
+    if (keycode == D)//&& game->map[game->player->posY][game->player->posX + 1] != '1')
+	{
+		game->player->posX += game->player->dirX;
+		game->player->posY += game->player->dirY;
+	}
+	if (keycode == A)//&& game->map[game->player->posY][game->player->posX - 1] != '1')
+	{
+		game->player->posX -= game->player->dirX;
+		game->player->posY -= game->player->dirY;
+	}
+	if (keycode == W)//&& game->map[game->player->posY - 1][game->player->posX] != '1')
+	{
+		game->player->posX += game->player->dirX;
+		game->player->posY -= game->player->dirY;
+	}
+	if (keycode == S)//&& game->map[game->player->posY + 1][game->player->posX] != '1')
+	{
+		game->player->posX -= game->player->dirX;
+		game->player->posY += game->player->dirY;
+	}
+	if (keycode == LEFT) {
+        double oldDirX = game->player->dirX;
+        game->player->dirX = game->player->dirX * cos(-ROT_SPEED) - game->player->dirY * sin(-ROT_SPEED);
+        game->player->dirY = oldDirX * sin(-ROT_SPEED) + game->player->dirY * cos(-ROT_SPEED);
+        double oldPlaneX = game->player->planeX;
+    	game->player->planeX = game->player->planeX * cos(-ROT_SPEED) - game->player->planeY * sin(-ROT_SPEED);
+        game->player->planeY = oldPlaneX * sin(-ROT_SPEED) + game->player->planeY * cos(-ROT_SPEED);
+    }
+    if (keycode == RIGHT) {
+        double oldDirX = game->player->dirX;
+        game->player->dirX = game->player->dirX * cos(ROT_SPEED) - game->player->dirY * sin(ROT_SPEED);
+        game->player->dirY = oldDirX * sin(ROT_SPEED) + game->player->dirY * cos(ROT_SPEED);
+        double oldPlaneX = game->player->planeX;
+        game->player->planeX = game->player->planeX * cos(ROT_SPEED) -  game->player->planeY * sin(ROT_SPEED);
+         game->player->planeY = oldPlaneX * sin(ROT_SPEED) +  game->player->planeY * cos(ROT_SPEED);
+    }
+
+	int line_end_x = game->player->posX * SIZE + game->player->dirX * 32;
+    int line_end_y = game->player->posY * SIZE + game->player->dirY * 32;
+	
+	draw_line(game->win->mlx_ptr, game->win->win_ptr, game->player->posX * SIZE, game->player->posY * SIZE, line_end_x, line_end_y);
+	
 	mlx_put_image_to_window(game->win->mlx_ptr, game->win->win_ptr, game->player->img->img_ptr,
-		game->player->x * SIZE, game->player->y * SIZE);
+		game->player->posX * SIZE, game->player->posY * SIZE);
     return (0);
 }
 
@@ -116,60 +171,39 @@ int	main(void)
 			{
 				mlx_put_image_to_window(win.mlx_ptr, win.win_ptr, wall.img_ptr, j * SIZE, i * SIZE);
 			}
-			if (game.map[i][j] == 'P')
+			if (game.map[i][j] == 'N' || game.map[i][j] == 'W' || game.map[i][j] == 'S' || game.map[i][j] == 'E')
 			{
-				player.x = j;
-				player.y = i;
+				player.posX = j;
+				player.posY = i;
+				if (game.map[i][j] == 'N')
+				{
+					player.dirX = 0;
+					player.dirY = 1;
+				}
+				if (game.map[i][j] == 'S')
+				{
+					player.dirX = 0;
+					player.dirY = -1;
+				}
+				if (game.map[i][j] == 'W')
+				{
+					player.dirX = -1;
+					player.dirY = 0;
+				}
+				if (game.map[i][j] == 'E')
+				{
+					player.dirX = 1;
+					player.dirY = 0;
+				}
 			}
 			j++;
 		}
 		i++;
 	}
-	printf("Player x position: %i\n", player.x);
-	printf("Player y position: %i\n", player.y);
-	mlx_put_image_to_window(win.mlx_ptr, win.win_ptr, player.img->img_ptr, player.x * SIZE, player.y * SIZE);	
+	printf("Player x position: %i\n", player.posX);
+	printf("Player y position: %i\n", player.posY);
+	mlx_put_image_to_window(win.mlx_ptr, win.win_ptr, player.img->img_ptr, player.posX * SIZE, player.posY * SIZE);	
 	mlx_hook(win.win_ptr, 2, 1L<<0, key_press, &game);
 	mlx_loop(win.mlx_ptr);
 	return (0);
 }
-
-
-
-
-
-
-
-
-// #include "minilibx_opengl/mlx.h"
-
-// typedef struct	s_data {
-// 	void	*img;
-// 	char	*addr;
-// 	int		bits_per_pixel;
-// 	int		line_length;
-// 	int		endian;
-// }				t_data;
-
-// void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
-// {
-// 	char	*dst;
-
-// 	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
-// 	*(unsigned int*)dst = color;
-// }
-
-// int	main(void)
-// {
-// 	void	*mlx;
-// 	void	*mlx_win;
-// 	t_data	img;
-
-// 	mlx = mlx_init();
-// 	mlx_win = mlx_new_window(mlx, 1028, 700, "Hello world!");
-// 	img.img = mlx_new_image(mlx, 1028, 700);
-// 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length,
-// 								&img.endian);
-// 	my_mlx_pixel_put(&img, 5, 5, 0x00FF0000);
-// 	mlx_put_image_to_window(mlx, mlx_win, img.img, 0, 0);
-// 	mlx_loop(mlx);
-// }

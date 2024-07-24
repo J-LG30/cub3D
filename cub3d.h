@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 17:08:08 by jle-goff          #+#    #+#             */
-/*   Updated: 2024/07/23 17:00:57 by rafasant         ###   ########.fr       */
+/*   Updated: 2024/07/24 13:45:30 by jle-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,10 @@
 #include <stdio.h>
 #include <fcntl.h>
 #include "libft/libft.h"
+#include <math.h>
 
+#define ROT_SPEED 0.05
+#define PI const double (4.0 * atan(1.0))
 #define SIZE 16
 
 #if defined(__APPLE__) && defined(__MACH__)
@@ -70,8 +73,12 @@ typedef struct s_img
 typedef struct s_player
 {
 	t_img	*img;
-	int		x;
-	int		y;
+	double	posX;
+	double	posY;
+	double	dirX;
+	double	dirY;
+	double	planeX;
+	double	planeY;
 }	t_player;
 
 
