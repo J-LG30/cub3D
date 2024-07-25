@@ -6,7 +6,7 @@
 /*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 17:06:58 by jle-goff          #+#    #+#             */
-/*   Updated: 2024/07/25 12:14:17 by jle-goff         ###   ########.fr       */
+/*   Updated: 2024/07/25 13:48:45 by jle-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,40 +30,13 @@ void	my_mlx_pixel_put(t_img *data, int x, int y, int colour)
 	*(unsigned int*)dst = colour;
 }
 
-// void	draw_line(t_img	*img, int x, int y, int colour, t_player *player)
-// {
-// 	int	i;
-// 	int	j;
 
-// 	i = x;
-// 	j = y;
-// 	printf("a\n");
-// 	printf("dirY %f\n", player->dirY);
-// 	printf("dirX %f\n", player->dirX);
-// 	printf("i %i", i);
-// 	printf("j %i", j);
-// 	while (i < (x * SIZE) + SIZE && i > 0)
-// 	{
-// 		j = y;
-// 		while (j < (y * SIZE) + SIZE && j > 0)
-// 		{
-// 			my_mlx_pixel_put(img, i, j, colour);
-// 			j++;
-// 			j *= player->dirY;
-// 		}
-// 		printf("in here\n");
-// 		i++;
-// 		i *= player->dirX;
-// 		printf("i is now %i", i);
-// 	}
-// }
-
-
-void
-plot_line (int x0, int y0, int x1, int y1, t_game *game, int colour)
+void	plot_line (int x0, int y0, int x1, int y1, t_game *game, int colour)
 {
-  int dx =  abs (x1 - x0), sx = x0 < x1 ? 1 : -1;
-  int dy = -abs (y1 - y0), sy = y0 < y1 ? 1 : -1; 
+  int dx =  abs (x1 - x0);
+  int sx = x0 < x1 ? 1 : -1;
+  int dy = -abs (y1 - y0);
+  int sy = y0 < y1 ? 1 : -1; 
   int err = dx + dy, e2; /* error value e_xy */
  
   for (;;){  /* loop */
@@ -79,8 +52,8 @@ void	draw_line(t_game *game, int colour)
 {
 	int size_offset_posX = round(game->player->posX * SIZE + SIZE/2);
 	int size_offset_posY = round(game->player->posY * SIZE + SIZE/2);
-	int	size_offset_pos2X = round(size_offset_posX + (SIZE * game->player->dirX));
-	int	size_offset_pos2Y = round(size_offset_posY + (SIZE * game->player->dirY));
+	int	size_offset_pos2X = round(size_offset_posX + (SIZE * 2 * game->player->dirX));
+	int	size_offset_pos2Y = round(size_offset_posY + (SIZE * 2 * game->player->dirY));
 
 	printf("Center: (%d, %d)\n", size_offset_posX, size_offset_posY);
 	printf("End: (%d, %d)\n", size_offset_pos2X, size_offset_pos2Y);
@@ -145,17 +118,17 @@ int key_press(int keycode, void *param)
         double oldDirX = game->player->dirX;
         game->player->dirX = game->player->dirX * cos(-ROT_SPEED) - game->player->dirY * sin(-ROT_SPEED);
         game->player->dirY = oldDirX * sin(-ROT_SPEED) + game->player->dirY * cos(-ROT_SPEED);
-        double oldPlaneX = game->player->planeX;
-    	game->player->planeX = game->player->planeX * cos(-ROT_SPEED) - game->player->planeY * sin(-ROT_SPEED);
-        game->player->planeY = oldPlaneX * sin(-ROT_SPEED) + game->player->planeY * cos(-ROT_SPEED);
+        // double oldPlaneX = game->player->planeX;
+    	// game->player->planeX = game->player->planeX * cos(-ROT_SPEED) - game->player->planeY * sin(-ROT_SPEED);
+        // game->player->planeY = oldPlaneX * sin(-ROT_SPEED) + game->player->planeY * cos(-ROT_SPEED);
     }
     if (keycode == RIGHT) {
         double oldDirX = game->player->dirX;
         game->player->dirX = game->player->dirX * cos(ROT_SPEED) - game->player->dirY * sin(ROT_SPEED);
         game->player->dirY = oldDirX * sin(ROT_SPEED) + game->player->dirY * cos(ROT_SPEED);
-        double oldPlaneX = game->player->planeX;
-        game->player->planeX = game->player->planeX * cos(ROT_SPEED) -  game->player->planeY * sin(ROT_SPEED);
-         game->player->planeY = oldPlaneX * sin(ROT_SPEED) +  game->player->planeY * cos(ROT_SPEED);
+        // double oldPlaneX = game->player->planeX;
+        // game->player->planeX = game->player->planeX * cos(ROT_SPEED) -  game->player->planeY * sin(ROT_SPEED);
+        //  game->player->planeY = oldPlaneX * sin(ROT_SPEED) +  game->player->planeY * cos(ROT_SPEED);
     }
 	
 	draw_line(game, 0x00FF0000);
@@ -239,7 +212,6 @@ int	main(void)
 	
 	draw_line(&game, 0x00FF0000);
 	
-	mlx_put_image_to_window(win.mlx_ptr, win.win_ptr, dir_line.img_ptr, player.posX * SIZE + SIZE / 2, player.posY * SIZE - SIZE / 2);
 	player.planeX = 0;
 	player.planeY = 0.66;
 	mlx_put_image_to_window(win.mlx_ptr, win.win_ptr, player.img->img_ptr, player.posX * SIZE, player.posY * SIZE);	

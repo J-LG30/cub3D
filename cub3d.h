@@ -6,7 +6,7 @@
 /*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 17:08:08 by jle-goff          #+#    #+#             */
-/*   Updated: 2024/07/25 11:02:22 by jle-goff         ###   ########.fr       */
+/*   Updated: 2024/07/25 12:41:37 by jle-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 #include "libft/libft.h"
 #include <math.h>
 
-#define ROT_SPEED 0.05
+#define ROT_SPEED 0.1
 #define PI const double (4.0 * atan(1.0))
 #define SIZE 16
 
