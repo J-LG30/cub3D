@@ -6,7 +6,7 @@
 /*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 17:08:08 by jle-goff          #+#    #+#             */
-/*   Updated: 2024/07/25 12:41:37 by jle-goff         ###   ########.fr       */
+/*   Updated: 2024/07/28 11:48:30 by jle-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 
 #define ROT_SPEED 0.1
 #define PI const double (4.0 * atan(1.0))
-#define SIZE 16
+#define SIZE 32
 
 #if defined(__APPLE__) && defined(__MACH__)
 	#define ESC 53
@@ -88,11 +88,15 @@ typedef struct s_game
 {
 	t_win		*win;
 	t_img		*bgd;
+	t_img		*wall;
 	t_player	*player;
 	char		**map;
 }	t_game;
 
 void	open_map(char *path, t_game *game);
+void	cast_rays(t_game *game, t_player *player);
+void	plot_line (int x0, int y0, int x1, int y1, t_game *game, int colour);
+void	draw_line(t_game *game, int x, int y0, int y1, int colour);
 
 #endif
 
