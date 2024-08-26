@@ -6,7 +6,7 @@
 /*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 17:08:08 by jle-goff          #+#    #+#             */
-/*   Updated: 2024/07/28 11:48:30 by jle-goff         ###   ########.fr       */
+/*   Updated: 2024/07/28 16:59:31 by jle-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,8 @@ void	open_map(char *path, t_game *game);
 void	cast_rays(t_game *game, t_player *player);
 void	plot_line (int x0, int y0, int x1, int y1, t_game *game, int colour);
 void	draw_line(t_game *game, int x, int y0, int y1, int colour);
+void	my_mlx_pixel_put(t_img *data, int x, int y, int colour);
+void	clear_image(t_img *data, int colour);
 
 #endif
 

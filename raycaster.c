@@ -6,11 +6,30 @@
 /*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 15:23:16 by jle-goff          #+#    #+#             */
-/*   Updated: 2024/07/28 12:02:30 by jle-goff         ###   ########.fr       */
+/*   Updated: 2024/07/30 16:20:58 by jle-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+void	clear_image(t_img *data, int colour)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while (i < data->w)
+	{
+		j = 0;
+		while (j < data->h)
+		{
+			my_mlx_pixel_put(data, i, j, colour);
+			j++;
+		}
+		i++;
+	}
+}
 
 void	cast_rays(t_game *game, t_player *player)
 {
@@ -45,13 +64,13 @@ void	cast_rays(t_game *game, t_player *player)
 	posY = player->posY;
 	i = 0;
 	
+	clear_image(game->wall, 0x00000000);
 	while (i < game->win->width)
 	{
 		stepX = 0;
 		stepY = 0;
 		mapX = (int)posX;
 		mapY = (int)posY;
-		printf("A\n");
 		cameraX = (2 * i) / (float)game->win->width - 1;
 		raydirX = player->dirX + player->planeX * cameraX;
 		raydirY = player->dirY + player->planeY * cameraX; // also got to check
@@ -79,6 +98,8 @@ void	cast_rays(t_game *game, t_player *player)
 			sideDistY = (1 + mapY - posY) * deltaDistY;
 		}
 		hit = 0;
+		// printf("SIDE DIST Y: %f\n", sideDistY);
+		// printf("SIDE DIST X: %f\n", sideDistX);
 		while (hit == 0)
 		{
 			if (sideDistX < sideDistY)
@@ -93,8 +114,8 @@ void	cast_rays(t_game *game, t_player *player)
 				mapY += stepY;
 				side = 1;
 			}
-			printf("B\n");
-			printf("MAPY %i MAPX %i\n", mapY, mapX);
+			
+			//printf("MAPY %i MAPX %i\n", mapY, mapX);
 			if (game->map[mapY][mapX] == '1')
 			{
 				hit = 1;
@@ -103,10 +124,15 @@ void	cast_rays(t_game *game, t_player *player)
 				//printf("seg fault after plotting line\n");
 			}
 		}
+		// if (side == 0)
+		// 	perpWallDist = sideDistX - deltaDistX;
+		// else
+		// 	perpWallDist = sideDistY - deltaDistY;
 		if (side == 0)
-			perpWallDist = sideDistX - deltaDistX;
-		else
-			perpWallDist = sideDistY - deltaDistY;
+            perpWallDist = (mapX - player->posX + (1 - stepX) / 2) / raydirX;
+        else
+            perpWallDist = (mapY - player->posY + (1 - stepY) / 2) / raydirY;
+
 		lineHeight = game->win->height / perpWallDist;
 		drawStart = game->win->height / 2 - (lineHeight / 2);
 		if (drawStart < 0)

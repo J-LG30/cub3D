@@ -1,12 +1,5 @@
 grid of 64x64 tiles
 
-Todo:
-Basic 2d map:
-check if map has unknown characters
-check if map is closed
-
-shoot ray from player (N S E W)
-
 WASD MOVEMENT:
 
 W AND S (up and down) are straightforward in their add and substracting of the x and y values.
@@ -46,6 +39,16 @@ derivation explained at: https://articulatedrobotics.xyz/tutorials/coordinate-tr
 The rotation matrix applies to counter clockwise rotation, which in our case should be rotating left.
 However, due to the offset of the directions, counter clockwise rotation really makes our player rotate right in-game.
 Therefore to rotate right, we apply the matrix multiplication as is, and to rotate left we multiply it but negate all the angle values.
+
+
+TO FIX:
+
+when facing North, I think the walls are being drawn one "unit" too close to the player. as in when the player is facing south, when
+its right at the border of the walls (the row or column right before the walls) the wall will basically take up the whole screen. 
+but when the player is facing north the wall takes up the whole screen even when the player still has a row/column inbetween them and
+the walls so its messing with the graphics and collisions. also happening when facing West. South and East are fine.
+
+
 
 
 
