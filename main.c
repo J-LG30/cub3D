@@ -6,7 +6,7 @@
 /*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 17:06:58 by jle-goff          #+#    #+#             */
-/*   Updated: 2024/07/30 15:52:56 by jle-goff         ###   ########.fr       */
+/*   Updated: 2024/09/19 17:07:05 by jle-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,6 +136,45 @@ void	draw_img(t_img *img, int x, int y, int colour)
 	}
 }
 
+int	check_collision(t_player *player, int keycode, char **map)
+{
+	double	posX;
+	double	posY;
+	double	dirX;
+	double	dirY;
+
+	posX = player->posX;
+	posY = player->posY;
+	dirX = player->dirX;
+	dirY = player->dirY;
+
+	if (keycode == S)
+	{
+		if (map[(int)(posY - dirY)][(int)(posX - dirX)] == '1')
+			return 1;
+	}
+	else if (keycode == W)
+	{
+		// printf("MAP Y COORDINATE: %i, MAP X COORDINATE: %i\n", (int)(posY + dirY), (int)(posX + dirX));
+		// printf("MAP CHAR: %c\n", map[(int)(posY + dirY)][(int)(posX + dirX)]);
+		if (map[(int)(posY + dirY)][(int)(posX + dirX)] == '1')
+		{
+			printf("will collide with a wall\n");
+			return (1);
+		}
+	}
+	else if (keycode == D)
+	{
+		printf("MAP Y COORDINATE: %i, MAP X COORDINATE: %i\n", (int)(posY + dirX), (int)(posX - dirY));
+		printf("MAP CHAR: %c\n", map[(int)(posY + dirX)][(int)(posX - dirY)]);
+		if (map[(int)(posY + dirX)][(int)(posX - dirY)] == '1')
+			return (1);
+	}
+	else if (keycode == A && map[(int)(posY - dirX)][(int)(posX + dirY)] == '1')
+		return (1);
+	return (0);
+}
+
 //check the up down keycodes bc thats weird
 int key_press(int keycode, void *param)
 {
@@ -147,34 +186,54 @@ int key_press(int keycode, void *param)
 	int		y_factor;
 
 	game = (t_game *)param;
-	if (game->player->dirY >= 0)
-		y_factor = 1;
-	else
-		y_factor = -1;
-	if (game->player->dirX >= 0)
-		x_factor = 1;
-	else
-		x_factor = -1;
-    if ((keycode == S) && game->map[(int)game->player->posY - y_factor][(int)game->player->posX] != '1')
+	if (!check_collision(game->player, keycode, game->map))
 	{
-		game->player->posX -= game->player->dirX;
-		game->player->posY -= game->player->dirY;
+		printf("passed collision check\n");
+		if (keycode == S)
+		{
+			game->player->posX -= game->player->dirX;
+			game->player->posY -= game->player->dirY;
+		}
+		if (keycode == W)
+		{
+			game->player->posX += game->player->dirX;
+			game->player->posY += game->player->dirY;
+		}
+		if (keycode == D) // Strafe Right aka find perpendicular vector with 90 degree clockwise rotation
+		{
+			game->player->posX -= game->player->dirY; // Move rightward along the X axis
+			game->player->posY += game->player->dirX; // Move rightward along the Y axis
+		}
+		if (keycode == A) // Strafe Left aka find perpendicular vector with 90 degree anti-clockwise rotation
+		{
+			game->player->posX += game->player->dirY; // Move leftward along the X axis
+			game->player->posY -= game->player->dirX; // Move leftward along the Y axis
+		}
 	}
-	if (keycode == W &&( game->map[(int)game->player->posY + y_factor][(int)game->player->posX]) != '1')
-	{
-		game->player->posX += game->player->dirX;
-		game->player->posY += game->player->dirY;
-	}
-	if (keycode == D && game->map[(int)game->player->posY][(int)game->player->posX + x_factor] != '1') // Strafe Right aka find perpendicular vector with 90 degree clockwise rotation
-	{
-		game->player->posX -= game->player->dirY; // Move rightward along the X axis
-		game->player->posY += game->player->dirX; // Move rightward along the Y axis
-	}
-	if (keycode == A && game->map[(int)game->player->posY][(int)game->player->posX - x_factor] != '1') // Strafe Left aka find perpendicular vector with 90 degree anti-clockwise rotation
-	{
-		game->player->posX += game->player->dirY; // Move leftward along the X axis
-		game->player->posY -= game->player->dirX; // Move leftward along the Y axis
-	}
+
+		// 	if ((keycode == S) && game->map[(int)(game->player->posY - game->player->dirY)][(int)game->player->posX] != '1')
+		// {
+		// 	game->player->posX -= game->player->dirX;
+		// 	game->player->posY -= game->player->dirY;
+		// }
+		// if (keycode == W &&( game->map[(int)(game->player->posY + game->player->dirY)][(int)game->player->posX]) != '1')
+		// {
+		// 	// printf("Y FACTOR: %i\n", y_factor);
+		// 	// printf("INT OF THE NEW Y POS: %i\n", (int)(game->player->posY + game->player->dirY));
+		// 	game->player->posX += game->player->dirX;
+		// 	game->player->posY += game->player->dirY;
+		// }
+		// if (keycode == D && game->map[(int)game->player->posY][(int)(game->player->posX + game->player->dirX)] != '1') // Strafe Right aka find perpendicular vector with 90 degree clockwise rotation
+		// {
+		// 	game->player->posX -= game->player->dirY; // Move rightward along the X axis
+		// 	game->player->posY += game->player->dirX; // Move rightward along the Y axis
+		// }
+		// if (keycode == A && game->map[(int)game->player->posY][(int)(game->player->posX - game->player->dirX)] != '1') // Strafe Left aka find perpendicular vector with 90 degree anti-clockwise rotation
+		// {
+		// 	game->player->posX += game->player->dirY; // Move leftward along the X axis
+		// 	game->player->posY -= game->player->dirX; // Move leftward along the Y axis
+		// }
+	
 	if (keycode == LEFT) {
         double oldDirX = game->player->dirX;
         game->player->dirX = game->player->dirX * cos(-ROT_SPEED) - game->player->dirY * sin(-ROT_SPEED);
@@ -192,8 +251,8 @@ int key_press(int keycode, void *param)
          game->player->planeY = oldPlaneX * sin(ROT_SPEED) +  game->player->planeY * cos(ROT_SPEED);
     }
 	cast_rays(game, game->player);
-	printf("Y VAL MAP ARR: %f\n",game->player->posY);
-	printf("X VAL MAP ARR: %f\n",game->player->posX);
+	printf("PLAYER POS X: %i\n", (int)game->player->posX);
+	printf("PLAYER POS Y: %i\n", (int)game->player->posY);
 	//draw_line(game, 0x00FF0000);
 	
 	// mlx_put_image_to_window(game->win->mlx_ptr, game->win->win_ptr, game->player->img->img_ptr,
@@ -212,6 +271,8 @@ int	main(void)
 	t_img		dir_line;
 
 	open_map("minimalist_map.cub", &game);
+	//open_map("small_map.cub", &game);
+
 
 	if (!game.map)
 	{
@@ -274,12 +335,11 @@ int	main(void)
 		i++;
 	}
 	
-	player.planeX = player.dirY * -1; 
-	player.planeY = player.dirX;
+	float FOV = 0.66;
+	player.planeX = player.dirY * -1 * FOV; 
+	player.planeY = player.dirX * FOV;
 	cast_rays(&game, &player);
 	
-	printf("Y VAL MAP ARR: %f\n",player.posY);
-	printf("X VAL MAP ARR: %f\n",player.posX);
 	mlx_hook(win.win_ptr, 2, 1L<<0, key_press, &game);
 	mlx_loop(win.mlx_ptr);
 	return (0);
