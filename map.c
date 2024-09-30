@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rafasant <rafasant@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 14:44:34 by rafasant          #+#    #+#             */
-/*   Updated: 2024/07/23 16:07:04 by rafasant         ###   ########.fr       */
+/*   Updated: 2024/09/20 20:42:03 by jle-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,5 +59,10 @@ void	open_map(char *path, t_game *game)
 	}
 	map_arr[i] = NULL;
 	game->map = map_arr;
+	if (!check_enclosed(map_arr))
+	{
+		printf("map not enclosed\n");
+		exit (1);
+	}
 }
 

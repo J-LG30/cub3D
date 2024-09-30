@@ -6,7 +6,7 @@
 #    By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/21 17:10:34 by jle-goff          #+#    #+#              #
-#    Updated: 2024/07/25 17:17:59 by jle-goff         ###   ########.fr        #
+#    Updated: 2024/09/20 20:42:19 by jle-goff         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,7 @@ endif
 
 MLX = $(MLX_DIR)/libmlx.a
 
-SRCS = main.c map.c raycaster.c
+SRCS = main.c map.c raycaster.c parser.c
 
 OBJS = $(SRCS:.c=.o)
 
