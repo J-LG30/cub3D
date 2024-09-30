@@ -6,7 +6,7 @@
 /*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 14:44:34 by rafasant          #+#    #+#             */
-/*   Updated: 2024/09/20 20:42:03 by jle-goff         ###   ########.fr       */
+/*   Updated: 2024/09/30 11:50:34 by jle-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ void	open_map(char *path, t_game *game)
 	map_fd = open(path, O_RDONLY);
 	if (map_fd < 0)
 	{
-		write(1, "Error\nFile not found\n", 22);
-		return ;
+		printf("Error: Unable to open map. Does the file exist?\n");
+		exit (1);
 	}
 	rows = 0;
 	while (get_next_line(map_fd))
@@ -61,7 +61,17 @@ void	open_map(char *path, t_game *game)
 	game->map = map_arr;
 	if (!check_enclosed(map_arr))
 	{
-		printf("map not enclosed\n");
+		printf("Error: Map not enclosed.\n");
+		exit (1);
+	}
+	if (!check_player(map_arr))
+	{
+		printf("Error: Amount of players in map is not equal to one.\nPlease provide map with single player character ('N' 'S' 'E' 'W')\n");
+		exit(1);
+	}
+	if (!check_all_valid_char(map_arr))
+	{
+		printf("Error: Invalid character found in map.\n");
 		exit (1);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 17:08:08 by jle-goff          #+#    #+#             */
-/*   Updated: 2024/09/20 20:41:41 by jle-goff         ###   ########.fr       */
+/*   Updated: 2024/09/30 13:57:37 by jle-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ typedef struct s_game
 	t_img		*wall;
 	t_player	*player;
 	char		**map;
+	t_img		*wall_text;
 }	t_game;
 
 void	open_map(char *path, t_game *game);
@@ -100,6 +101,8 @@ void	draw_line(t_game *game, int x, int y0, int y1, int colour);
 void	my_mlx_pixel_put(t_img *data, int x, int y, int colour);
 void	clear_image(t_img *data, int colour);
 int		check_enclosed(char **map);
+int		check_player(char **map);
+int		check_all_valid_char(char **map);
 
 #endif
 

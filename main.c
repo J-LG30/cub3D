@@ -6,7 +6,7 @@
 /*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 17:06:58 by jle-goff          #+#    #+#             */
-/*   Updated: 2024/09/19 17:07:05 by jle-goff         ###   ########.fr       */
+/*   Updated: 2024/09/30 14:03:24 by jle-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,17 @@ t_img   new_sprite(void *mlx, int width, int height)
 									&image.line_len, &image.endian);
 	image.w = width;
 	image.h = height;
+	return (image);
+}
+
+
+t_img	new_xpm_sprite(void *mlx, char *path)
+{
+	t_img   image;
+
+	image.img_ptr = mlx_xpm_file_to_image(mlx, path, &image.w, &image.h);
+	image.addr = mlx_get_data_addr(image.img_ptr, &image.bpp,
+									&image.line_len, &image.endian);
 	return (image);
 }
 
@@ -260,7 +271,23 @@ int key_press(int keycode, void *param)
     return (0);
 }
 
-int	main(void)
+int	check_extension(char *map)
+{
+	int	i;
+
+	i = 0;
+	while (map[i])
+		i++;
+	if (ft_strlen(map) >= 4)
+	{
+		if (map[i - 4] == '.' && map[i - 3] == 'c'
+			&& map[i - 2] == 'u' && map[i - 1] == 'b')
+			return (1);
+	}
+	return (0);
+}
+
+int	main(int argc, char **argv)
 {
 	t_win		win;
 	t_player	player;
@@ -269,23 +296,34 @@ int	main(void)
 	t_game		game;
 	t_img		wall;
 	t_img		dir_line;
+	t_img		wall_text;
 
-	open_map("minimalist_map.cub", &game);
-	//open_map("small_map.cub", &game);
-
-
-	if (!game.map)
+	if (argc != 2 || !argv[0] || !argv[1])
 	{
-		printf("uh oh no map\n");
+		printf("Usage: ./cub3d [Map.cub]\n");
 		exit (1);
 	}
+	if (!check_extension(argv[1]))
+	{
+		printf("Error: Map file needs to be of type .cub\n");
+		exit (1);
+	}
+	open_map(argv[1], &game);
+
+	// if (!game.map)
+	// {
+	// 	printf("uh oh no map\n");
+	// 	exit (1);
+	// }
 	win.width = 1280;
 	win.height = 768;
 	game.player = &player;
 	game.win = &win;
 	game.bgd = &bgd;
 	game.wall = &wall;
+	game.wall_text = &wall_text;
 
+	wall_text = new_xpm_sprite(win.mlx_ptr, "bark.xpm");
 	bgd.win = &win;
 
 	win.mlx_ptr = mlx_init();
