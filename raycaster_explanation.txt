@@ -1,0 +1,12 @@
+I cast the same amount of rays as the width of the game window.
+
+stepX and stepY are variables eventually set to either 1 or -1 to indicate the direction in the
+x and y axis that we will take a "step" in when performing the algorithm.
+
+mapX and mapY are just int casts of the player position, so we can use it to access into
+the map array to check if the rays have hit a wall.
+
+player->planeX and player->planeY are form a vector that is perpendicular to the player direction.the rays pass through the plane at regular intervals.
+
+to get the direction of the ray, when you add the plane and player direction together (because they're perpendicular vectors) and multiply it by a variable called cameraX;
+This multiplication serves to indication at which point the ray hits the camera plane, which affects the direction of the ray.

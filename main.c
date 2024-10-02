@@ -6,7 +6,7 @@
 /*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 17:06:58 by jle-goff          #+#    #+#             */
-/*   Updated: 2024/09/30 14:03:24 by jle-goff         ###   ########.fr       */
+/*   Updated: 2024/10/02 12:07:36 by jle-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -321,9 +321,9 @@ int	main(int argc, char **argv)
 	game.win = &win;
 	game.bgd = &bgd;
 	game.wall = &wall;
-	game.wall_text = &wall_text;
+	// game.wall_text = &wall_text;
 
-	wall_text = new_xpm_sprite(win.mlx_ptr, "bark.xpm");
+	// wall_text = new_xpm_sprite(win.mlx_ptr, "bark.xpm");
 	bgd.win = &win;
 
 	win.mlx_ptr = mlx_init();
