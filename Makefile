@@ -26,7 +26,7 @@ endif
 
 MLX = $(MLX_DIR)/libmlx.a
 
-SRCS = main.c map.c raycaster.c parser.c
+SRCS = main.c map.c raycaster.c parser.c texture.c
 
 OBJS = $(SRCS:.c=.o)
 
@@ -36,7 +36,7 @@ LIBFT_A = $(LIBFT_DIR)/libft.a
 all: $(NAME)
 
 $(NAME): $(OBJS) $(LIBFT_A) $(MLX)
-	@$(CC) $(FLAGS) $(OBJS) $(LIBFT_A) $(MLX) $(INCLUDE) -o $(@)
+	@$(CC) $(FLAGS) $(OBJS) $(LIBFT_A) $(MLX) $(INCLUDE) -o $(@) 
 
 $(LIBFT_A):
 	@$(MAKE) --no-print-directory -C $(LIBFT_DIR)

@@ -82,7 +82,17 @@ typedef struct s_player
 	double	planeX;
 	double	planeY;
 }	t_player;
-
+// Add texture structure
+typedef struct s_tex {
+    t_img   *north;
+    t_img   *south;
+    t_img   *east;
+    t_img   *west;
+    char    *north_path;
+    char    *south_path;
+    char    *east_path;
+    char    *west_path;
+} t_tex;
 
 typedef struct s_game
 {
@@ -92,7 +102,19 @@ typedef struct s_game
 	t_player	*player;
 	char		**map;
 	t_img		*wall_text;
+	t_tex       *textures;
 }	t_game;
+
+//texture stuff
+#define TEX_WIDTH 64
+#define TEX_HEIGHT 64
+int is_texture_line(char *line);
+int is_texture_char(char c);
+int parse_texture_paths(t_game *game, char *line);
+t_tex   *init_textures(void *mlx_ptr);
+void    load_textures(t_game *game);
+int     parse_texture_paths(t_game *game, char *line);
+void    free_textures(t_tex *textures, void *mlx_ptr);
 
 void	open_map(char *path, t_game *game);
 void	cast_rays(t_game *game, t_player *player);

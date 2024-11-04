@@ -286,99 +286,122 @@ int	check_extension(char *map)
 	}
 	return (0);
 }
-
-int	main(int argc, char **argv)
+int main(int argc, char **argv)
 {
-	t_win		win;
-	t_player	player;
-	t_img		bgd;
-	t_img		player_img;
-	t_game		game;
-	t_img		wall;
-	t_img		dir_line;
-	t_img		wall_text;
+    t_win       win;
+    t_player    player;
+    t_img       bgd;
+    t_img       player_img;
+    t_game      game;
+    t_img       wall;
+    t_img       dir_line;
 
-	if (argc != 2 || !argv[0] || !argv[1])
-	{
-		printf("Usage: ./cub3d [Map.cub]\n");
-		exit (1);
-	}
-	if (!check_extension(argv[1]))
-	{
-		printf("Error: Map file needs to be of type .cub\n");
-		exit (1);
-	}
-	open_map(argv[1], &game);
+    if (argc != 2 || !argv[0] || !argv[1])
+    {
+        printf("Usage: ./cub3d [Map.cub]\n");
+        exit(1);
+    }
+    if (!check_extension(argv[1]))
+    {
+        printf("Error: Map file needs to be of type .cub\n");
+        exit(1);
+    }
 
-	// if (!game.map)
-	// {
-	// 	printf("uh oh no map\n");
-	// 	exit (1);
-	// }
-	win.width = 1280;
-	win.height = 768;
-	game.player = &player;
-	game.win = &win;
-	game.bgd = &bgd;
-	game.wall = &wall;
-	// game.wall_text = &wall_text;
+    printf("Starting MLX initialization...\n");
+    win.width = 1280;
+    win.height = 768;
+    win.mlx_ptr = mlx_init();
+    if (!win.mlx_ptr)
+    {
+        printf("MLX init failed\n");
+        exit(1);
+    }
+    win.win_ptr = mlx_new_window(win.mlx_ptr, win.width, win.height, "Cub3D");
+    printf("MLX initialized\n");
 
-	// wall_text = new_xpm_sprite(win.mlx_ptr, "bark.xpm");
-	bgd.win = &win;
+    game.win = &win;
+    game.player = &player;
+    game.bgd = &bgd;
+    game.wall = &wall;
+    bgd.win = &win;
 
-	win.mlx_ptr = mlx_init();
-	win.win_ptr = mlx_new_window(win.mlx_ptr, 1280, 768, "Hello world!");
-	
-	wall = new_sprite(win.mlx_ptr, win.width, win.height);
-	player_img = new_sprite(win.mlx_ptr, SIZE, SIZE);
-	bgd = new_sprite(win.mlx_ptr, win.width, win.height);
-	player.img = &player_img;
-	player.dir_line = &dir_line;
+    printf("Creating images...\n");
+    wall = new_sprite(win.mlx_ptr, win.width, win.height);
+    player_img = new_sprite(win.mlx_ptr, SIZE, SIZE);
+    bgd = new_sprite(win.mlx_ptr, win.width, win.height);
+    player.img = &player_img;
+    player.dir_line = &dir_line;
+    printf("Images created\n");
 
-	int	i = 0;
-	int	j = 0;
-	draw_img(&bgd, 0, 0, 0x000000);
-	while (game.map[i])
-	{
-		j = 0;
-		while (game.map[i][j] != '\0')
-		{
-			if (game.map[i][j] == 'N' || game.map[i][j] == 'W' || game.map[i][j] == 'S' || game.map[i][j] == 'E')
-			{
-				player.posX = j;
-				player.posY = i;
-				if (game.map[i][j] == 'N')
-				{
-					player.dirX = 0;
-					player.dirY = -1;
-				}
-				if (game.map[i][j] == 'S')
-				{
-					player.dirX = 0;
-					player.dirY = 1;
-				}
-				if (game.map[i][j] == 'W')
-				{
-					player.dirX = -1;
-					player.dirY = 0;
-				}
-				if (game.map[i][j] == 'E')
-				{
-					player.dirX = 1;
-					player.dirY = 0;
-				}
-			}
-			j++;
-		}
-		i++;
-	}
-	
-	float FOV = 0.66;
-	player.planeX = player.dirY * -1 * FOV; 
-	player.planeY = player.dirX * FOV;
-	cast_rays(&game, &player);
-	
-	mlx_hook(win.win_ptr, 2, 1L<<0, key_press, &game);
-	mlx_loop(win.mlx_ptr);
-	return (0);
+
+    printf("Initializing texture structure...\n");
+    game.textures = init_textures(win.mlx_ptr);
+    if (!game.textures)
+    {
+        printf("Texture initialization failed\n");
+        exit(1);
+    }
+    printf("Texture structure initialized\n");
+
+
+    printf("Opening map file...\n");
+    open_map(argv[1], &game);
+    printf("Map opened and parsed\n");
+
+    printf("Loading textures...\n");
+    load_textures(&game);
+    printf("Textures loaded\n");
+
+    printf("Setting up player...\n");
+    int i = 0;
+    int j = 0;
+    draw_img(&bgd, 0, 0, 0x000000);
+    while (game.map[i])
+    {
+        j = 0;
+        while (game.map[i][j] != '\0')
+        {
+            if (game.map[i][j] == 'N' || game.map[i][j] == 'W' || 
+                game.map[i][j] == 'S' || game.map[i][j] == 'E')
+            {
+                player.posX = j;
+                player.posY = i;
+                if (game.map[i][j] == 'N')
+                {
+                    player.dirX = 0;
+                    player.dirY = -1;
+                }
+                else if (game.map[i][j] == 'S')
+                {
+                    player.dirX = 0;
+                    player.dirY = 1;
+                }
+                else if (game.map[i][j] == 'W')
+                {
+                    player.dirX = -1;
+                    player.dirY = 0;
+                }
+                else if (game.map[i][j] == 'E')
+                {
+                    player.dirX = 1;
+                    player.dirY = 0;
+                }
+            }
+            j++;
+        }
+        i++;
+    }
+    printf("Player setup complete\n");
+
+    float FOV = 0.66;
+    player.planeX = player.dirY * -1 * FOV;
+    player.planeY = player.dirX * FOV;
+
+    printf("Starting first raycast...\n");
+    cast_rays(&game, &player);
+    printf("First raycast complete\n");
+
+    mlx_hook(win.win_ptr, 2, 1L<<0, key_press, &game);
+    mlx_loop(win.mlx_ptr);
+    return (0);
 }

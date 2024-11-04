@@ -5,6 +5,26 @@ I'm doing separate functions for each error checking so looping over the array e
 I don't think this affects performance in any big way, and for norminette its easier to split it.
 But I could probably put two error checkings in one function.
 */
+int is_texture_char(char c)
+{
+    if (c != 'N' && c != 'S' && c != 'E' && c != 'W'
+        && c != 'O' && c != 'A')  // O for NO/SO, A for EA
+        return (0);
+    return (1);
+}
+
+// New function to check if a line contains valid texture identifier
+int is_texture_line(char *line)
+{
+    if (!line || ft_strlen(line) < 3)
+        return (0);
+    if ((line[0] == 'N' && line[1] == 'O') ||
+        (line[0] == 'S' && line[1] == 'O') ||
+        (line[0] == 'W' && line[1] == 'E') ||
+        (line[0] == 'E' && line[1] == 'A'))
+        return (1);
+    return (0);
+}
 
 int	is_valid_char(char c)
 {
