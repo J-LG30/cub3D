@@ -53,14 +53,54 @@ void	cast_rays(t_game *game, t_player *player)
     int		lineHeight;
     int		drawStart;
     int		drawEnd;
+    int ceiling_color;
+	int floor_color;
+
+	//this shite will need to be separated as well #norminetteHater
+	clear_image(game->wall, 0x00000000);
+	floor_color = (game->floor_color.r << 16) | 
+                     (game->floor_color.g << 8) | 
+                      game->floor_color.b;
+
+	ceiling_color = (game->ceiling_color.r << 16) | 
+                       (game->ceiling_color.g << 8) | 
+                        game->ceiling_color.b;
+    printf("Converting colors complete - Drawing ceiling and floor\n");
+
+	if (!game->wall || !game->wall->img_ptr)
+    {
+        perror("Error: wall image not initialized\n");
+        return;
+    }
+	int y = 0;
+	int x = 0;
+  	while (y < game->win->height / 2)
+    {
+		x = 0;
+        while (x++ < game->win->width)
+        {
+            my_mlx_pixel_put(game->wall, x, y, ceiling_color);
+        }
+		y++;
+    }
+    y = game->win->height / 2;
+    while (y < game->win->height)
+    {
+		x = 0;
+        while (x++ < game->win->width)
+        {
+            my_mlx_pixel_put(game->wall, x, y, floor_color);
+        }
+		y++;
+    }
+
+    printf("Floor and ceiling drawn successfully\n");
     
     raydirX = player->dirX;
     raydirY = player->dirY;
     posX = player->posX;
     posY = player->posY;
     i = 0;
-    
-    clear_image(game->wall, 0x00000000);
     while (i < game->win->width)
     {
         mapX = (int)posX;
@@ -174,6 +214,7 @@ void	cast_rays(t_game *game, t_player *player)
             // Apply shading for sides
             if (side == 1)
                 color = (color >> 1) & 8355711; // Make sides darker
+
 
             my_mlx_pixel_put(game->wall, i, y, color);
             y++;

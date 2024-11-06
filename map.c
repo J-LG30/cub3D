@@ -27,21 +27,19 @@ static void count_rows(char *path, int *rows, int *texture_lines)
     {
         if (is_texture_line(line))
             (*texture_lines)++;
-        else if (ft_strlen(line) > 1)  // Skip empty lines
+        else if (ft_strlen(line) > 1)
             (*rows)++;
         free(line);
     }
     close(fd);
 }
-#include "cub3d.h"
-#include "cub3d.h"
+
 
 static void process_texture_line(char *line, t_game *game)
 {
-    printf("\nProcessing texture line: %s", line);
     if (!line || !game)
     {
-        printf("Invalid line or game pointer\n");
+        perror("Invalid line or game pointer\n");
         return;
     }
     parse_texture_paths(game, line);
@@ -56,57 +54,32 @@ void open_map(char *path, t_game *game)
     int     rows;
     int     texture_count;
 
-    printf("\n--- Starting map opening process ---\n");
-    printf("Opening map file: %s\n", path);
-    
-    // First pass: count rows and textures
     rows = 0;
-    texture_count = 0;
     map_fd = open(path, O_RDONLY);
-    if (map_fd < 0)
-    {
-        printf("Failed to open map file!\n");
-        exit(1);
-    }
-
-    printf("Counting rows and textures...\n");
     while ((line = get_next_line(map_fd)))
     {
-        if (ft_strlen(line) > 0 && line[0] != '\n')
-        {
-            if (texture_count < 4 && (ft_strncmp(line, "NO ", 3) == 0 || 
-                ft_strncmp(line, "SO ", 3) == 0 || 
-                ft_strncmp(line, "WE ", 3) == 0 || 
-                ft_strncmp(line, "EA ", 3) == 0))
-            {
-                texture_count++;
-                printf("Found texture line #%d: %s", texture_count, line);
-            }
-            else
-                rows++;
-        }
+        if (line[0] == ' ' || line[0] == '1')
+            rows++;
         free(line);
     }
     close(map_fd);
-    
-    printf("Found %d texture lines and %d map rows\n", texture_count, rows);
 
-    printf("Allocating map array...\n");
     map_arr = malloc(sizeof(char *) * (rows + 1));
     if (!map_arr)
     {
-        printf("Failed to allocate map array!\n");
+        perror("Failed to allocate map array!\n");
         return;
     }
 
-    printf("Reading map content...\n");
     map_fd = open(path, O_RDONLY);
     i = 0;
     texture_count = 0;
+	//uh uh, looks like we'll need to separate the whole shite
     while ((line = get_next_line(map_fd)))
     {
         if (ft_strlen(line) > 0 && line[0] != '\n')
         {
+            // Process textures
             if (texture_count < 4 && (ft_strncmp(line, "NO ", 3) == 0 || 
                 ft_strncmp(line, "SO ", 3) == 0 || 
                 ft_strncmp(line, "WE ", 3) == 0 || 
@@ -115,7 +88,28 @@ void open_map(char *path, t_game *game)
                 process_texture_line(line, game);
                 texture_count++;
             }
-            else
+            // Process colors
+            else if (ft_strncmp(line, "F ", 2) == 0)
+            {
+                if (!parse_color(line, &game->floor_color))
+                {
+                    printf("Error: Invalid floor color format\n");
+                    free(line);
+                    exit(1);
+                }
+            }
+            else if (ft_strncmp(line, "C ", 2) == 0)
+            {
+                printf("Processing ceiling color: %s", line);
+                if (!parse_color(line, &game->ceiling_color))
+                {
+                    printf("Error: Invalid ceiling color format\n");
+                    free(line);
+                    exit(1);
+                }
+            }
+            // Process map lines
+            else if (line[0] == ' ' || line[0] == '1')
             {
                 if (line[ft_strlen(line) - 1] == '\n')
                     line[ft_strlen(line) - 1] = '\0';
@@ -133,17 +127,17 @@ void open_map(char *path, t_game *game)
     printf("\nValidating map...\n");
     if (!check_enclosed(map_arr))
     {
-        printf("Error: Map not enclosed!\n");
+        perror("Error: Map not enclosed!\n");
         exit(1);
     }
     if (!check_player(map_arr))
     {
-        printf("Error: Invalid player configuration!\n");
+        perror("Error: Invalid player configuration!\n");
         exit(1);
     }
     if (!check_all_valid_char(map_arr))
     {
-        printf("Error: Invalid character in map!\n");
+        perror("Error: Invalid character in map!\n");
         exit(1);
     }
     printf("Map validation complete\n");

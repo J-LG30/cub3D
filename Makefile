@@ -26,7 +26,7 @@ endif
 
 MLX = $(MLX_DIR)/libmlx.a
 
-SRCS = main.c map.c raycaster.c parser.c texture.c
+SRCS = main.c map.c raycaster.c parser.c texture.c color.c
 
 OBJS = $(SRCS:.c=.o)
 

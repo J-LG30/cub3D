@@ -338,7 +338,7 @@ int main(int argc, char **argv)
     game.textures = init_textures(win.mlx_ptr);
     if (!game.textures)
     {
-        printf("Texture initialization failed\n");
+        perror("Texture initialization failed\n");
         exit(1);
     }
     printf("Texture structure initialized\n");

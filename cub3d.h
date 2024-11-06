@@ -82,7 +82,13 @@ typedef struct s_player
 	double	planeX;
 	double	planeY;
 }	t_player;
-// Add texture structure
+
+typedef struct s_color {
+    int r;
+    int g;
+    int b;
+} t_color;
+
 typedef struct s_tex {
     t_img   *north;
     t_img   *south;
@@ -103,8 +109,13 @@ typedef struct s_game
 	char		**map;
 	t_img		*wall_text;
 	t_tex       *textures;
+	t_color     floor_color;
+	t_color     ceiling_color;
 }	t_game;
 
+//color stuff
+int     parse_color(char *line, t_color *color);
+int     is_color_line(char *line);
 //texture stuff
 #define TEX_WIDTH 64
 #define TEX_HEIGHT 64
