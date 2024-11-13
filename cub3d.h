@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gverissi <gverissi@42lisboa.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 17:08:08 by jle-goff          #+#    #+#             */
-/*   Updated: 2024/09/30 13:57:37 by jle-goff         ###   ########.fr       */
+/*   Updated: 2024/11/13 16:06:36 by gverissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,22 @@ typedef struct s_player
 	double	planeY;
 }	t_player;
 
+typedef struct s_color {
+    int r;
+    int g;
+    int b;
+} t_color;
+
+typedef struct s_tex {
+    t_img   *north;
+    t_img   *south;
+    t_img   *east;
+    t_img   *west;
+    char    *north_path;
+    char    *south_path;
+    char    *east_path;
+    char    *west_path;
+} t_tex;
 
 typedef struct s_game
 {
@@ -92,7 +108,28 @@ typedef struct s_game
 	t_player	*player;
 	char		**map;
 	t_img		*wall_text;
+	t_tex		*textures;
+	t_color		floor_color;
+	t_color		ceiling_color;
 }	t_game;
+
+
+//cleaning stuff
+void    cleanup_game(t_game *game);
+int     handle_exit(t_game *game);
+//color stuff
+int     parse_color(char *line, t_color *color);
+int     is_color_line(char *line);
+//texture stuff
+#define TEX_WIDTH 64
+#define TEX_HEIGHT 64
+int is_texture_line(char *line);
+int is_texture_char(char c);
+int parse_texture_paths(t_game *game, char *line);
+t_tex   *init_textures(void *mlx_ptr);
+void    load_textures(t_game *game);
+int     parse_texture_paths(t_game *game, char *line);
+void    free_textures(t_tex *textures, void *mlx_ptr);
 
 void	open_map(char *path, t_game *game);
 void	cast_rays(t_game *game, t_player *player);

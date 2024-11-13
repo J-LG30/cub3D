@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+         #
+#    By: gverissi <gverissi@42lisboa.com>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/21 17:10:34 by jle-goff          #+#    #+#              #
-#    Updated: 2024/09/20 20:42:19 by jle-goff         ###   ########.fr        #
+#    Updated: 2024/11/13 16:07:26 by gverissi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,7 @@ endif
 
 MLX = $(MLX_DIR)/libmlx.a
 
-SRCS = main.c map.c raycaster.c parser.c
+SRCS = main.c map.c raycaster.c parser.c texture.c color.c cleanup.c
 
 OBJS = $(SRCS:.c=.o)
 
@@ -36,7 +36,7 @@ LIBFT_A = $(LIBFT_DIR)/libft.a
 all: $(NAME)
 
 $(NAME): $(OBJS) $(LIBFT_A) $(MLX)
-	@$(CC) $(FLAGS) $(OBJS) $(LIBFT_A) $(MLX) $(INCLUDE) -o $(@)
+	@$(CC) $(FLAGS) $(OBJS) $(LIBFT_A) $(MLX) $(INCLUDE) -o $(@) 
 
 $(LIBFT_A):
 	@$(MAKE) --no-print-directory -C $(LIBFT_DIR)
