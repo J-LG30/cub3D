@@ -3,59 +3,61 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gverissi <gverissi@42lisboa.com>           +#+  +:+       +#+        */
+/*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 17:08:08 by jle-goff          #+#    #+#             */
-/*   Updated: 2024/11/13 16:06:36 by gverissi         ###   ########.fr       */
+/*   Updated: 2024/11/25 15:20:12 by jle-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
 # define CUB3D_H
 
-#include <stdio.h>
-#include <fcntl.h>
-#include "libft/libft.h"
-#include <math.h>
+# include <stdio.h>
+# include <fcntl.h>
+# include "libft/libft.h"
+# include <math.h>
 
-#define ROT_SPEED 0.1
-#define PI const double (4.0 * atan(1.0))
-#define SIZE 32
+# define ROT_SPEED 0.1
+# define PI const double 3.14159265358979323846
+# define SIZE 32
+# define TEX_WIDTH 64
+# define TEX_HEIGHT 64
+# define FOV 0.66
 
-#if defined(__APPLE__) && defined(__MACH__)
-	#define ESC 53
-	#define W 13
-	#define A 0
-	#define S 1
-	#define D 2
-	#define UP 126
-	#define LEFT 123
-	#define DOWN 125
-	#define RIGHT 124
-	#define FRAMES 20
-	#include "minilibx_opengl/mlx.h"
+# if defined(__APPLE__) && defined(__MACH__)
+#  define ESC 53
+#  define W 13
+#  define A 0
+#  define S 1
+#  define D 2
+#  define UP 126
+#  define LEFT 123
+#  define DOWN 125
+#  define RIGHT 124
+#  define FRAMES 20
+#  include "minilibx_opengl/mlx.h"
+# else
+#  define ESC 65307
+#  define W 119
+#  define A 97
+#  define S 115
+#  define D 100
+#  define UP 65362
+#  define LEFT 65361
+#  define DOWN 65364
+#  define RIGHT 65363
+#  define FRAMES 6000
+#  include "minilibx-linux/mlx.h"
+# endif
 
-#else
-	#define ESC 65307
-	#define W 119
-	#define A 97
-	#define S 115
-	#define D 100
-	#define UP 65362
-	#define LEFT 65361
-	#define DOWN 65364
-	#define RIGHT 65363
-	#define FRAMES 6000
-	#include "minilibx-linux/mlx.h"
-#endif
-
-typedef struct  s_win
+typedef struct s_win
 {
-	void    *mlx_ptr;
-	void    *win_ptr;
-	int     width;
-	int     height;
-}   t_win;
+	void	*mlx_ptr;
+	void	*win_ptr;
+	int		width;
+	int		height;
+}	t_win;
 
 typedef struct s_img
 {
@@ -69,36 +71,63 @@ typedef struct s_img
 	int		line_len;
 	int		x;
 	int		y;
-}		t_img;
+}	t_img;
+
+typedef struct s_rayval
+{
+	double	raydirx;
+	double	raydiry;
+	double	camerax;
+	double	deltadistx;
+	double	deltadisty;
+	double	sidedistx;
+	double	sidedisty;
+	double	perpwalldist;
+	double	tex_pos;
+	double	wall_x;
+	int		stepx;
+	int		stepy;
+	int		mapx;
+	int		mapy;
+	int		side;
+	int		lineheight;
+	int		drawstart;
+	int		drawend;
+	int		tex_x;
+	int		tex_y;
+}	t_rayval;
 
 typedef struct s_player
 {
 	t_img	*img;
 	t_img	*dir_line;
-	double	posX;
-	double	posY;
-	double	dirX;
-	double	dirY;
-	double	planeX;
-	double	planeY;
+	double	posx;
+	double	posy;
+	double	dirx;
+	double	diry;
+	double	planex;
+	double	planey;
 }	t_player;
 
-typedef struct s_color {
-    int r;
-    int g;
-    int b;
-} t_color;
+typedef struct s_color
+{
+	int	r;
+	int	g;
+	int	b;
+}	t_color;
 
-typedef struct s_tex {
-    t_img   *north;
-    t_img   *south;
-    t_img   *east;
-    t_img   *west;
-    char    *north_path;
-    char    *south_path;
-    char    *east_path;
-    char    *west_path;
-} t_tex;
+typedef struct s_tex
+{
+	t_img	*north;
+	t_img	*south;
+	t_img	*east;
+	t_img	*west;
+	char	*north_path;
+	char	*south_path;
+	char	*east_path;
+	char	*west_path;
+	int		tex_count;
+}	t_tex;
 
 typedef struct s_game
 {
@@ -113,33 +142,42 @@ typedef struct s_game
 	t_color		ceiling_color;
 }	t_game;
 
-
 //cleaning stuff
-void    cleanup_game(t_game *game);
-int     handle_exit(t_game *game);
+void	cleanup_game(t_game *game);
+int		handle_exit(t_game *game);
 //color stuff
-int     parse_color(char *line, t_color *color);
-int     is_color_line(char *line);
+int		parse_color(char *line, t_color *color);
+int		is_color_line(char *line);
 //texture stuff
-#define TEX_WIDTH 64
-#define TEX_HEIGHT 64
-int is_texture_line(char *line);
-int is_texture_char(char c);
-int parse_texture_paths(t_game *game, char *line);
-t_tex   *init_textures(void *mlx_ptr);
-void    load_textures(t_game *game);
-int     parse_texture_paths(t_game *game, char *line);
-void    free_textures(t_tex *textures, void *mlx_ptr);
+int		is_texture_line(char *line);
+int		is_texture_char(char c);
+int		parse_texture_paths(t_game *game, char *line);
+t_tex	*init_textures(void *mlx_ptr);
+void	load_textures(t_game *game);
+int		parse_texture_paths(t_game *game, char *line);
+void	free_textures(t_tex *textures, void *mlx_ptr);
+
+//drawing
+t_img	new_sprite(void *mlx, int width, int height);
+t_img	new_xpm_sprite(void *mlx, char *path);
+void	draw_img(t_img *img, int x, int y, int colour);
+void	my_mlx_pixel_put(t_img *data, int x, int y, int colour);
+void	draw_texture(t_game *game, t_img *texture, int x, t_rayval *rval);
+int		draw_ceiling(t_game *game);
+int		draw_floor(t_game *game);
+void	clear_image(t_img *data, int colour);
+void	draw_wall(t_game *game, t_player *player, t_rayval *rval, int x);
 
 void	open_map(char *path, t_game *game);
+void	process_line(char *line, t_game *game, char **map_arr, int *i);
+void	map_free(char **map_arr);
 void	cast_rays(t_game *game, t_player *player);
-void	plot_line (int x0, int y0, int x1, int y1, t_game *game, int colour);
-void	draw_line(t_game *game, int x, int y0, int y1, int colour);
-void	my_mlx_pixel_put(t_img *data, int x, int y, int colour);
 void	clear_image(t_img *data, int colour);
 int		check_enclosed(char **map);
 int		check_player(char **map);
 int		check_all_valid_char(char **map);
+int		key_press(int keycode, void *param);
+int		init_window(t_win *win);
+void	init_player(t_game *game, t_player *player);
 
 #endif
-

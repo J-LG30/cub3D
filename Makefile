@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: gverissi <gverissi@42lisboa.com>           +#+  +:+       +#+         #
+#    By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/21 17:10:34 by jle-goff          #+#    #+#              #
-#    Updated: 2024/11/13 16:07:26 by gverissi         ###   ########.fr        #
+#    Updated: 2024/11/25 15:25:21 by jle-goff         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,8 @@ endif
 
 MLX = $(MLX_DIR)/libmlx.a
 
-SRCS = main.c map.c raycaster.c parser.c texture.c color.c cleanup.c
+SRCS = main.c map.c map2.c raycaster.c parser.c parser2.c texture.c color.c cleanup.c \
+	movement.c graphic_helpers.c init.c draw_textures.c drawing.c load_textures.c
 
 OBJS = $(SRCS:.c=.o)
 

@@ -3,39 +3,43 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gverissi <gverissi@42lisboa.com>           +#+  +:+       +#+        */
+/*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 15:51:37 by gverissi          #+#    #+#             */
-/*   Updated: 2024/11/13 15:51:40 by gverissi         ###   ########.fr       */
+/*   Updated: 2024/11/21 11:43:41 by jle-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
 /*
-I'm doing separate functions for each error checking so looping over the array each time.
-I don't think this affects performance in any big way, and for norminette its easier to split it.
+I'm doing separate functions for each
+error checking so looping over the array each time.
+I don't think this affects performance in any big way,
+and for norminette its easier to split it.
 But I could probably put two error checkings in one function.
 */
-int is_texture_char(char c)
+
+// O for NO/SO, A for EA
+int	is_texture_char(char c)
 {
-    if (c != 'N' && c != 'S' && c != 'E' && c != 'W'
-        && c != 'O' && c != 'A')  // O for NO/SO, A for EA
-        return (0);
-    return (1);
+	if (c != 'N' && c != 'S' && c != 'E' && c != 'W'
+		&& c != 'O' && c != 'A')
+		return (0);
+	return (1);
 }
 
 // New function to check if a line contains valid texture identifier
-int is_texture_line(char *line)
+int	is_texture_line(char *line)
 {
-    if (!line || ft_strlen(line) < 3)
-        return (0);
-    if ((line[0] == 'N' && line[1] == 'O') ||
-        (line[0] == 'S' && line[1] == 'O') ||
-        (line[0] == 'W' && line[1] == 'E') ||
-        (line[0] == 'E' && line[1] == 'A'))
-        return (1);
-    return (0);
+	if (!line || ft_strlen(line) < 3)
+		return (0);
+	if ((line[0] == 'N' && line[1] == 'O')
+		|| (line[0] == 'S' && line[1] == 'O')
+		|| (line[0] == 'W' && line[1] == 'E')
+		|| (line[0] == 'E' && line[1] == 'A'))
+		return (1);
+	return (0);
 }
 
 int	is_valid_char(char c)
@@ -46,74 +50,7 @@ int	is_valid_char(char c)
 	return (1);
 }
 
-int	enclosed_helper(char **map, int i, int j)
-{
-	// if (!is_valid_char(map[i + 1][j]) || !is_valid_char(map[i][j + 1]))
-	// 	return (0);
-	if (i == 0 && map[i][j] != '1')
-	{
-			return (0);
-	}
-	if (j == 0 && map[i][j] != '1')
-	{
-			return (0);
-	}
-	return (1);
-}
-
-int	check_enclosed(char **map)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (map[i])
-	{
-		j = 0;
-		while (map[i][j])
-		{
-			if (map[i][j] == '0' || map[i][j] == 'N' || map[i][j] == 'S'
-				|| map[i][j] == 'W' || map[i][j] == 'E')
-			{
-				if (enclosed_helper(map, i, j) == 0)
-					return (0);
-			}
-			j++;
-		}
-		i++;
-	}
-	return (1);
-}
-
-int	check_player(char **map)
-{
-	int	i;
-	int	j;
-	int	player_count;
-
-	i = 0;
-	player_count = 0;
-	while (map[i])
-	{
-		j = 0;
-		while (map[i][j])
-		{
-			if (map[i][j] == 'N' || map[i][j] == 'S'
-				|| map[i][j] == 'W' || map[i][j] == 'E')
-			{
-				player_count++;
-			}
-			j++;
-		}
-		i++;
-	}
-	if (player_count == 1)
-		return (1);
-	else
-		return (0);
-}
-
-int check_all_valid_char(char **map)
+int	check_all_valid_char(char **map)
 {
 	int	i;
 	int	j;
@@ -132,4 +69,3 @@ int check_all_valid_char(char **map)
 	}
 	return (1);
 }
-

@@ -6,221 +6,116 @@
 /*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 15:23:16 by jle-goff          #+#    #+#             */
-/*   Updated: 2024/10/02 15:57:03 by jle-goff         ###   ########.fr       */
+/*   Updated: 2024/11/25 15:16:18 by jle-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	clear_image(t_img *data, int colour)
+void	init_rayval_helper(t_player *player, t_rayval *rval)
 {
-    int	i;
-    int	j;
+	if (rval->raydirx < 0)
+	{
+		rval->stepx = -1;
+		rval->sidedistx = (player->posx - rval->mapx) * rval->deltadistx;
+	}
+	else
+	{
+		rval->stepx = 1;
+		rval->sidedistx = (rval->mapx + 1.0 - player->posx) * rval->deltadistx;
+	}
+	if (rval->raydiry < 0)
+	{
+		rval->stepy = -1;
+		rval->sidedisty = (player->posy - rval->mapy) * rval->deltadisty;
+	}
+	else
+	{
+		rval->stepy = 1;
+		rval->sidedisty = (rval->mapy + 1.0 - player->posy) * rval->deltadisty;
+	}
+}
 
-    i = 0;
-    j = 0;
-    while (i < data->w)
-    {
-        j = 0;
-        while (j < data->h)
-        {
-            my_mlx_pixel_put(data, i, j, colour);
-            j++;
-        }
-        i++;
-    }
+t_rayval	*init_rayval(t_game *game, t_player *player, int i)
+{
+	t_rayval	*rval;
+
+	rval = malloc(sizeof(t_rayval));
+	if (!rval)
+		return (NULL);
+	rval->mapx = (int)player->posx;
+	rval->mapy = (int)player->posy;
+	rval->camerax = (2 * i) / (float)game->win->width - 1;
+	rval->raydirx = player->dirx + (player->planex * rval->camerax);
+	rval->raydiry = player->diry + (player->planey * rval->camerax);
+	if (rval->raydirx == 0)
+		rval->deltadistx = 1e30;
+	else
+		rval->deltadistx = fabs(1 / rval->raydirx);
+	if (rval->raydiry == 0)
+		rval->deltadisty = 1e30;
+	else
+		rval->deltadisty = fabs(1 / rval->raydiry);
+	init_rayval_helper(player, rval);
+	return (rval);
+}
+
+void	calculate_wall_distance(t_rayval *rval)
+{
+	if (rval->side == 0)
+		rval->perpwalldist = rval->sidedistx - rval->deltadistx;
+	else
+		rval->perpwalldist = rval->sidedisty - rval->deltadisty;
+}
+
+void	perform_dda(t_game *game, t_rayval *rval)
+{
+	int	hit;
+	int	side;
+
+	hit = 0;
+	while (hit == 0)
+	{
+		if (rval->sidedistx < rval->sidedisty)
+		{
+			rval->sidedistx += rval->deltadistx;
+			rval->mapx += rval->stepx;
+			side = 0;
+		}
+		else
+		{
+			rval->sidedisty += rval->deltadisty;
+			rval->mapy += rval->stepy;
+			side = 1;
+		}
+		if (game->map[rval->mapy][rval->mapx] == '1')
+			hit = 1;
+	}
+	rval->side = side;
 }
 
 void	cast_rays(t_game *game, t_player *player)
 {
-    double	raydirX;
-    double	raydirY;
-    double	posX;
-    double	posY;
-    double	cameraX;
-    double	deltaDistX;
-    double	deltaDistY;
-    double	sideDistX;
-    double	sideDistY;
-    double	perpWallDist;
-    int		stepX;
-    int		stepY;
-    int		i;
-    int		mapX;
-    int		mapY;
-    int		hit;
-    int		side;
-    int		lineHeight;
-    int		drawStart;
-    int		drawEnd;
-    int ceiling_color;
-	int floor_color;
+	int			i;
+	t_rayval	*rval;
 
-	//this shite will need to be separated as well #norminetteHater
 	clear_image(game->wall, 0x00000000);
-	floor_color = (game->floor_color.r << 16) | 
-                     (game->floor_color.g << 8) | 
-                      game->floor_color.b;
-
-	ceiling_color = (game->ceiling_color.r << 16) | 
-                       (game->ceiling_color.g << 8) | 
-                        game->ceiling_color.b;
-    printf("Converting colors complete - Drawing ceiling and floor\n");
-
-	if (!game->wall || !game->wall->img_ptr)
-    {
-        perror("Error: wall image not initialized\n");
-        return;
-    }
-	int y = 0;
-	int x = 0;
-  	while (y < game->win->height / 2)
-    {
-		x = 0;
-        while (x++ < game->win->width)
-        {
-            my_mlx_pixel_put(game->wall, x, y, ceiling_color);
-        }
-		y++;
-    }
-    y = game->win->height / 2;
-    while (y < game->win->height)
-    {
-		x = 0;
-        while (x++ < game->win->width)
-        {
-            my_mlx_pixel_put(game->wall, x, y, floor_color);
-        }
-		y++;
-    }
-
-    printf("Floor and ceiling drawn successfully\n");
-    
-    raydirX = player->dirX;
-    raydirY = player->dirY;
-    posX = player->posX;
-    posY = player->posY;
-    i = 0;
-    while (i < game->win->width)
-    {
-        mapX = (int)posX;
-        mapY = (int)posY;
-        cameraX = (2 * i) / (float)game->win->width - 1;
-        raydirX = player->dirX + (player->planeX * cameraX);
-        raydirY = player->dirY + (player->planeY * cameraX);
-        perpWallDist = 0;
-        
-        if (raydirX == 0)
-            deltaDistX = 1e30;
-        else
-            deltaDistX = fabs(1 / raydirX);
-        if (raydirY == 0)
-            deltaDistY = 1e30;
-        else
-            deltaDistY = fabs(1 / raydirY);
-
-        if (raydirX < 0)
-        {
-            stepX = -1;
-            sideDistX = (posX - mapX) * deltaDistX;
-        }
-        else
-        {
-            stepX = 1;
-            sideDistX = (mapX + 1.0 - posX) * deltaDistX;
-        }
-        if (raydirY < 0)
-        {
-            stepY = -1;
-            sideDistY = (posY - mapY) * deltaDistY;
-        }
-        else
-        {
-            stepY = 1;
-            sideDistY = (mapY + 1.0 - posY) * deltaDistY;
-        }
-
-        // DDA Algorithm
-        hit = 0;
-        while (hit == 0)
-        {
-            if (sideDistX < sideDistY)
-            {
-                sideDistX += deltaDistX;
-                mapX += stepX;
-                side = 0;
-            }
-            else
-            {
-                sideDistY += deltaDistY;
-                mapY += stepY;
-                side = 1;
-            }
-            if (game->map[mapY][mapX] == '1')
-                hit = 1;
-        }
-
-        if (side == 0)
-            perpWallDist = sideDistX - deltaDistX;
-        else
-            perpWallDist = sideDistY - deltaDistY;
-
-        // calculate wall height and boundaries 
-        lineHeight = (int)(game->win->height / perpWallDist);
-        drawStart = -lineHeight / 2 + game->win->height / 2;
-        if (drawStart < 0)
-            drawStart = 0;
-        drawEnd = lineHeight / 2 + game->win->height / 2;
-        if (drawEnd >= game->win->height)
-            drawEnd = game->win->height - 1;
-
-        // Calculate texture xy
-        double wallX;
-        if (side == 0)
-            wallX = posY + perpWallDist * raydirY;
-        else
-            wallX = posX + perpWallDist * raydirX;
-        wallX -= floor(wallX);
-
-        // Get x coordinate 
-        int texX = (int)(wallX * TEX_WIDTH);
-        if (side == 0 && raydirX > 0)
-            texX = TEX_WIDTH - texX - 1;
-        if (side == 1 && raydirY < 0)
-            texX = TEX_WIDTH - texX - 1;
-
-        // Select texture 
-        t_img *current_texture;
-        if (side == 0)
-            current_texture = raydirX > 0 ? game->textures->east : game->textures->west;
-        else
-            current_texture = raydirY > 0 ? game->textures->south : game->textures->north;
-
-        // Draw the textured vertical line
-        double step = 1.0 * TEX_HEIGHT / lineHeight;
-        double texPos = (drawStart - game->win->height / 2 + lineHeight / 2) * step;
-        
-        int y = drawStart;
-        while (y < drawEnd)
-        {
-            int texY = (int)texPos & (TEX_HEIGHT - 1);
-            texPos += step;
-            
-            // Get color from texture
-            char *tex_pixel = current_texture->addr + 
-                (texY * current_texture->line_len + texX * (current_texture->bpp / 8));
-            int color = *(unsigned int*)tex_pixel;
-            
-            // Apply shading for sides
-            if (side == 1)
-                color = (color >> 1) & 8355711; // Make sides darker
-
-
-            my_mlx_pixel_put(game->wall, i, y, color);
-            y++;
-        }
-        i++;
-    }
-    mlx_put_image_to_window(game->win->mlx_ptr, game->win->win_ptr, game->bgd->img_ptr, 0, 0);
-    mlx_put_image_to_window(game->win->mlx_ptr, game->win->win_ptr, game->wall->img_ptr, 0, 0);
+	if (draw_floor(game) || draw_ceiling(game))
+		return ;
+	i = 0;
+	while (i < game->win->width)
+	{
+		rval = init_rayval(game, player, i);
+		if (!rval)
+			return ;
+		perform_dda(game, rval);
+		calculate_wall_distance(rval);
+		draw_wall(game, player, rval, i);
+		free(rval);
+		i++;
+	}
+	mlx_put_image_to_window(game->win->mlx_ptr,
+		game->win->win_ptr, game->bgd->img_ptr, 0, 0);
+	mlx_put_image_to_window(game->win->mlx_ptr,
+		game->win->win_ptr, game->wall->img_ptr, 0, 0);
 }
