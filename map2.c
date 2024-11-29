@@ -6,7 +6,7 @@
 /*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 17:40:24 by jle-goff          #+#    #+#             */
-/*   Updated: 2024/11/22 17:44:34 by jle-goff         ###   ########.fr       */
+/*   Updated: 2024/11/29 19:46:22 by jle-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,18 +54,18 @@ void	process_line(char *line, t_game *game, char **map_arr, int *i)
 			process_texture_line(line, game);
 			game->textures->tex_count++;
 		}
+		else if (ft_strncmp(line, "C ", 2) == 0)
+			process_ceiling_color(line, game);
+		else if (line[0] == ' ' || line[0] == '1')
+			process_map_line(line, map_arr, i);
 		else if (ft_strncmp(line, "F ", 2) == 0)
 		{
 			if (!parse_color(line, &game->floor_color))
 			{
 				printf("Error: Invalid floor color format\n");
 				free(line);
-				exit(1);
+				handle_exit(game);
 			}
 		}
-		else if (ft_strncmp(line, "C ", 2) == 0)
-			process_ceiling_color(line, game);
-		else if (line[0] == ' ' || line[0] == '1')
-			process_map_line(line, map_arr, i);
 	}
 }

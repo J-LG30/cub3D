@@ -6,7 +6,7 @@
 /*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 14:44:34 by rafasant          #+#    #+#             */
-/*   Updated: 2024/11/29 17:54:54 by jle-goff         ###   ########.fr       */
+/*   Updated: 2024/11/29 19:47:22 by jle-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ char	**allocate_map_array(int rows)
 {
 	char	**map_arr;
 
-	map_arr = malloc(sizeof(char *) * (rows + 1));
+	map_arr = ft_calloc(sizeof(char *), (rows + 1));
 	if (!map_arr)
 	{
 		perror("Failed to allocate map array!\n");
@@ -107,15 +107,18 @@ int	read_map_file(char *path, t_game *game, char **map_arr)
 	int		map_fd;
 	char	*line;
 	int		i;
+	int		j;
 
 	map_fd = open(path, O_RDONLY);
 	if (map_fd < 0)
 		return (0);
 	i = 0;
+	j = 0;
 	game->textures->tex_count = 0;
 	line = get_next_line(map_fd);
 	while (line)
 	{
+		game->map[j] = NULL;
 		process_line(line, game, map_arr, &i);
 		free(line);
 		line = get_next_line(map_fd);
@@ -140,13 +143,13 @@ void	open_map(char *path, t_game *game)
 		perror("Failed to allocate map array!\n");
 		return ;
 	}
+	game->map = map_arr;
 	if (!read_map_file(path, game, map_arr))
 	{
 		perror("Map error: ");
 		map_free(map_arr);
 		return ;
 	}
-	game->map = map_arr;
 	validate_map(game, map_arr);
 	printf("--- Map opening process complete ---\n\n");
 }

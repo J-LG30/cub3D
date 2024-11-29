@@ -1,8 +1,8 @@
 NO ./textures/north_wall.xpm
-SO ./textures/south_wall.xpm
-EA ./textures/east_wall.xpm
-WE ./textures/west_wall.xpm
-F 40,35,30
+SO ./textures/suki_licking.xpm
+EA ./textures/suki_paw_hanging.xpm
+WE ./textures/suki_yawning.xpm
+F 40,  35,30
 C 85,119,136  
             1111111111111111111111111
             1000000000110000000000001
