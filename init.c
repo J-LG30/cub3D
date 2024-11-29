@@ -6,7 +6,7 @@
 /*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 16:48:34 by jle-goff          #+#    #+#             */
-/*   Updated: 2024/11/22 16:50:46 by jle-goff         ###   ########.fr       */
+/*   Updated: 2024/11/29 17:31:04 by jle-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ void	init_player_helper(t_game *game, t_player *player, int i, int j)
 {
 	if (game->map[i][j] == 'N')
 	{
-		player->dirx = 0;
-		player->diry = -1;
+		player->dirx = 0 + OFFSET;
+		player->diry = -1 + OFFSET;
 	}
 	else if (game->map[i][j] == 'S')
 	{
@@ -26,8 +26,8 @@ void	init_player_helper(t_game *game, t_player *player, int i, int j)
 	}
 	else if (game->map[i][j] == 'W')
 	{
-		player->dirx = -1;
-		player->diry = 0;
+		player->dirx = -1 + OFFSET;
+		player->diry = 0 + OFFSET;
 	}
 	else if (game->map[i][j] == 'E')
 	{

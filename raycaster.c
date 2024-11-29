@@ -6,7 +6,7 @@
 /*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 15:23:16 by jle-goff          #+#    #+#             */
-/*   Updated: 2024/11/25 15:16:18 by jle-goff         ###   ########.fr       */
+/*   Updated: 2024/11/29 17:30:08 by jle-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,12 +94,12 @@ void	perform_dda(t_game *game, t_rayval *rval)
 	rval->side = side;
 }
 
+//clear_image(game->wall, 0x00000000);
 void	cast_rays(t_game *game, t_player *player)
 {
 	int			i;
 	t_rayval	*rval;
 
-	clear_image(game->wall, 0x00000000);
 	if (draw_floor(game) || draw_ceiling(game))
 		return ;
 	i = 0;

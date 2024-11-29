@@ -6,7 +6,7 @@
 /*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 17:08:08 by jle-goff          #+#    #+#             */
-/*   Updated: 2024/11/29 15:46:34 by jle-goff         ###   ########.fr       */
+/*   Updated: 2024/11/29 17:30:27 by jle-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # define TEX_WIDTH 64
 # define TEX_HEIGHT 64
 # define FOV 0.66
+# define OFFSET 0.01
 
 # if defined(__APPLE__)//&& defined(__MACH__)
 #  define ESC 53
