@@ -6,7 +6,7 @@
 /*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 14:44:34 by rafasant          #+#    #+#             */
-/*   Updated: 2024/11/22 17:44:11 by jle-goff         ###   ########.fr       */
+/*   Updated: 2024/11/29 16:29:47 by jle-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,11 @@ int	count_map_rows(char *path)
 
 	rows = 0;
 	map_fd = open(path, O_RDONLY);
+	if (map_fd < 0)
+	{
+		perror("Error ");
+		return (-1);
+	}
 	line = get_next_line(map_fd);
 	while (line)
 	{
@@ -126,6 +131,8 @@ void	open_map(char *path, t_game *game)
 	int		rows;
 
 	rows = count_map_rows(path);
+	if (rows == -1)
+		handle_exit(game);
 	map_arr = allocate_map_array(rows);
 	if (!map_arr)
 	{

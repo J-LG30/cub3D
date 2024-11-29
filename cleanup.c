@@ -6,7 +6,7 @@
 /*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 16:03:14 by gverissi          #+#    #+#             */
-/*   Updated: 2024/11/25 15:32:16 by jle-goff         ###   ########.fr       */
+/*   Updated: 2024/11/29 16:33:47 by jle-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	free_map(t_game *game)
 {
 	int	i;
 
-	if (game->map)
+	if (game && game->map)
 	{
 		i = 0;
 		while (game->map[i])
