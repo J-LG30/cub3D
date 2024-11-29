@@ -6,7 +6,7 @@
 /*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 14:44:34 by rafasant          #+#    #+#             */
-/*   Updated: 2024/11/29 16:29:47 by jle-goff         ###   ########.fr       */
+/*   Updated: 2024/11/29 17:54:54 by jle-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,7 @@ void	open_map(char *path, t_game *game)
 	char	**map_arr;
 	int		rows;
 
+	game->map = NULL;
 	rows = count_map_rows(path);
 	if (rows == -1)
 		handle_exit(game);
