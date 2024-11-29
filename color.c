@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   color.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gverissi <gverissi@42lisboa.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 10:48:43 by jle-goff          #+#    #+#             */
-/*   Updated: 2024/11/22 15:42:09 by jle-goff         ###   ########.fr       */
+/*   Updated: 2024/11/29 17:21:24 by gverissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,28 +22,49 @@ int	is_color_line(char *line)
 	return (0);
 }
 
+static char	**free_split(char **split)
+{
+	int	i;
+
+	i = 0;
+	while (split[i])
+		free(split[i++]);
+	free(split);
+	return (NULL);
+}
+
+static char	**check_split(char **split)
+{
+	if (!split || !split[1])
+	{
+		perror("Failed to split line by space\n");
+		if (split)
+			return (free_split(split));
+		return (NULL);
+	}
+	return (split);
+}
+
 char	**split_rgb(char *line)
 {
 	char	**split;
 	char	**rgb;
 	int		i;
 
-	printf("Parsing color line: '%s'\n", line);
 	split = ft_split(line, ' ');
-	if (!split || !split[1])
-	{
-		printf("Failed to split line by space\n");
+	if (!check_split(split))
 		return (NULL);
-	}
 	rgb = ft_split(split[1], ',');
-	i = 0;
-	while (split[i])
-		free(split[i++]);
-	free(split);
-	if (!rgb || !rgb[0] || !rgb[1] || !rgb[2])
-	{
-		printf("Failed to split RGB values\n");
+	free_split(split);
+	if (!rgb)
 		return (NULL);
+	i = 0;
+	while (rgb[i])
+		i++;
+	if (i != 3)
+	{
+		perror("Failed to split RGB values.\n");
+		return (free_split(rgb));
 	}
 	return (rgb);
 }
