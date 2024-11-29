@@ -6,7 +6,7 @@
 /*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 17:08:08 by jle-goff          #+#    #+#             */
-/*   Updated: 2024/11/25 15:20:12 by jle-goff         ###   ########.fr       */
+/*   Updated: 2024/11/29 15:46:34 by jle-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,13 @@
 # include <math.h>
 
 # define ROT_SPEED 0.1
-# define PI const double 3.14159265358979323846
+# define PI 3.14159265358979323846
 # define SIZE 32
 # define TEX_WIDTH 64
 # define TEX_HEIGHT 64
 # define FOV 0.66
 
-# if defined(__APPLE__) && defined(__MACH__)
+# if defined(__APPLE__)//&& defined(__MACH__)
 #  define ESC 53
 #  define W 13
 #  define A 0

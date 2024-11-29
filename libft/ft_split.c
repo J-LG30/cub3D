@@ -6,7 +6,7 @@
 /*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:17:17 by jle-goff          #+#    #+#             */
-/*   Updated: 2023/04/21 19:35:59 by jle-goff         ###   ########.fr       */
+/*   Updated: 2024/11/29 16:01:21 by jle-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,11 @@ int	count_words(char const *s, char c)
 		if (s[i] != c)
 		{
 			numstr++;
-			while (s[i] != c && s[i] != '\0')
+			while (s[i] && s[i] != c)
 				i++;
 		}
-		i++;
+		if (s[i] != '\0')
+			i++;
 	}
 	return (numstr);
 }
