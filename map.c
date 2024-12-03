@@ -6,7 +6,7 @@
 /*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 14:44:34 by rafasant          #+#    #+#             */
-/*   Updated: 2024/11/29 19:47:22 by jle-goff         ###   ########.fr       */
+/*   Updated: 2024/12/03 17:02:03 by jle-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,12 +113,11 @@ int	read_map_file(char *path, t_game *game, char **map_arr)
 	if (map_fd < 0)
 		return (0);
 	i = 0;
-	j = 0;
 	game->textures->tex_count = 0;
 	line = get_next_line(map_fd);
 	while (line)
 	{
-		game->map[j] = NULL;
+		game->map[i] = NULL;
 		process_line(line, game, map_arr, &i);
 		free(line);
 		line = get_next_line(map_fd);

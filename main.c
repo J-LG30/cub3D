@@ -6,7 +6,7 @@
 /*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 17:06:58 by jle-goff          #+#    #+#             */
-/*   Updated: 2024/11/29 17:54:44 by jle-goff         ###   ########.fr       */
+/*   Updated: 2024/12/03 17:13:30 by jle-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ void	finish_game_setup(t_game *game, t_player *player, char *map)
 	init_player(game, player);
 	cast_rays(game, player);
 	mlx_hook(game->win->win_ptr, 2, 1L << 0, key_press, game);
+	mlx_hook(game->win->win_ptr, 17, 0, handle_exit, game);
 	mlx_loop(game->win->mlx_ptr);
 }
 

@@ -6,7 +6,7 @@
 /*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 16:03:14 by gverissi          #+#    #+#             */
-/*   Updated: 2024/11/29 19:35:54 by jle-goff         ###   ########.fr       */
+/*   Updated: 2024/12/03 17:04:44 by jle-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,12 @@ void	free_map(t_game *game)
 
 	if (game && game->map)
 	{
-		// i = 0;
-		// while (game->map[i])
-		// {
-		// 	free(game->map[i]);
-		// 	i++;
-		// }
-		free(game->map[2]);
+		i = 0;
+		while (game->map[i])
+		{
+			free(game->map[i]);
+			i++;
+		}
 		free(game->map);
 	}
 }
