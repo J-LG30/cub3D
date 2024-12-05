@@ -6,7 +6,7 @@
 /*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 17:08:08 by jle-goff          #+#    #+#             */
-/*   Updated: 2024/11/29 17:30:27 by jle-goff         ###   ########.fr       */
+/*   Updated: 2024/12/05 18:16:49 by jle-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,6 +147,7 @@ typedef struct s_game
 	t_tex *textures;
 	t_color floor_color;
 	t_color ceiling_color;
+	int		parsed_map;
 } t_game;
 
 // cleaning stuff

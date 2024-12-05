@@ -6,7 +6,7 @@
 /*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 17:06:58 by jle-goff          #+#    #+#             */
-/*   Updated: 2024/12/03 17:13:30 by jle-goff         ###   ########.fr       */
+/*   Updated: 2024/12/05 18:17:04 by jle-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ int	main(int argc, char **argv)
 	wall = new_sprite(win.mlx_ptr, win.width, win.height);
 	bgd = new_sprite(win.mlx_ptr, win.width, win.height);
 	game.textures = init_textures(win.mlx_ptr);
+	game.parsed_map = 0;
 	if (!game.textures)
 	{
 		perror("Texture initialization failed\n");
