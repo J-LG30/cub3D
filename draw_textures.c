@@ -57,7 +57,7 @@ t_img	*get_texture(t_game *game, t_rayval *rval)
 
 void	draw_wall(t_game *game, t_player *player, t_rayval *rval, int x)
 {
-	t_img	*current_texture;
+    t_img   *current_texture;
 
 	rval->lineheight = (int)(game->win->height / rval->perpwalldist);
 	rval->drawstart = -(rval->lineheight) / 2 + game->win->height / 2;
@@ -71,11 +71,12 @@ void	draw_wall(t_game *game, t_player *player, t_rayval *rval, int x)
 	else
 		rval->wall_x = player->posx + rval->perpwalldist * rval->raydirx;
 	rval->wall_x -= floor(rval->wall_x);
-	rval->tex_x = (int)(rval->wall_x * TEX_WIDTH);
-	if (rval->side == 0 && rval->raydirx > 0)
-		rval->tex_x = TEX_WIDTH - rval->tex_x - 1;
-	if (rval->side == 1 && rval->raydiry < 0)
-		rval->tex_x = TEX_WIDTH - rval->tex_x - 1;
 	current_texture = get_texture(game, rval);
+	rval->tex_x = (int)(rval->wall_x * current_texture->w);
+	rval->tex_x = rval->tex_x % current_texture->w;
+	if (rval->side == 0 && rval->raydirx > 0)
+		rval->tex_x = current_texture->w - rval->tex_x - 1;
+	if (rval->side == 1 && rval->raydiry < 0)
+		rval->tex_x = current_texture->w - rval->tex_x - 1;
 	draw_texture(game, current_texture, x, rval);
 }

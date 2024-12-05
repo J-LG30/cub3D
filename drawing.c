@@ -40,24 +40,22 @@ int	draw_floor(t_game *game)
 	floor_color = (game->floor_color.r << 16)
 		| (game->floor_color.g << 8)
 		| game->floor_color.b;
-	printf("Converting colors complete - Drawing floor\n");
 	if (!game->wall || !game->wall->img_ptr)
-	{
-		perror("Error: wall image not initialized\n");
 		return (1);
-	}
 	y = game->win->height / 2;
 	while (y < game->win->height)
 	{
 		x = 0;
-		while (x++ < game->win->width)
+		while (x < game->win->width)
 		{
 			my_mlx_pixel_put(game->wall, x, y, floor_color);
+			x++;
 		}
 		y++;
 	}
 	return (0);
 }
+
 
 int	draw_ceiling(t_game *game)
 {
@@ -68,22 +66,18 @@ int	draw_ceiling(t_game *game)
 	ceiling_color = (game->ceiling_color.r << 16)
 		| (game->ceiling_color.g << 8)
 		| game->ceiling_color.b;
-	printf("Converting colors complete - Drawing ceiling\n");
 	if (!game->wall || !game->wall->img_ptr)
-	{
-		perror("Error: wall image not initialized\n");
 		return (1);
-	}
 	y = 0;
 	while (y < game->win->height / 2)
 	{
 		x = 0;
-		while (x++ < game->win->width)
+		while (x < game->win->width)
 		{
 			my_mlx_pixel_put(game->wall, x, y, ceiling_color);
+			x++;
 		}
 		y++;
 	}
-	printf("Floor and ceiling drawn successfully\n");
 	return (0);
 }
