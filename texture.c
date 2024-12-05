@@ -11,32 +11,49 @@
 /* ************************************************************************** */
 
 #include "cub3d.h"
+#include "libft/libft.h"
+
+static char	*trim_end(char *str)
+{
+	int	len;
+
+	len = ft_strlen(str);
+	while (len > 0 && (str[len - 1] == ' ' || str[len - 1] == '\t' || str[len - 1] == '\n' || str[len - 1] == '\r'))
+		str[--len] = '\0';
+	return (str);
+}
+
+static char	*skip_whitespace(char *str)
+{
+	while (*str && (*str == ' ' || *str == '\t'))
+		str++;
+	return (str);
+}
 
 int check_texture_duplicate(char *line, t_game *game)
 {
-    static t_tex_check textures[] = {
-        {"NO ", 0},
-        {"SO ", 0},
-        {"WE ", 0},
-        {"EA ", 0}
-    };
-    int i;
+	static t_tex_check	textures[] = {
+		{"NO", 0},
+		{"SO", 0},
+		{"WE", 0},
+		{"EA", 0}};
+	int					i;
 
-    i = 0;
-    while (i < 4)
-    {
-        if (ft_strncmp(line, textures[i].id, 3) == 0)
-        {
-            if (++textures[i].count > 1)
-            {
-                printf("Error\nDuplicate %s texture\n", textures[i].id);
-                handle_exit(game);
-            }
-            return (1);
-        }
-        i++;
-    }
-    return (0);
+	i = 0;
+	while (i < 4)
+	{
+		if (ft_strncmp(line, textures[i].id, 2) == 0)
+		{
+			if (++textures[i].count > 1)
+			{
+				perror("Error\nDuplicate texture\n");
+				handle_exit(game);
+			}
+			return (1);
+		}
+		i++;
+	}
+	return (0);
 }
 
 static int has_duplicate_texture(t_game *game, const char *identifier)
@@ -54,7 +71,7 @@ static int has_duplicate_texture(t_game *game, const char *identifier)
 
 t_tex *init_textures(void *mlx_ptr)
 {
-	t_tex *tex;
+	t_tex	*tex;
 
 	tex = malloc(sizeof(t_tex));
 	if (!tex)
@@ -81,7 +98,7 @@ t_tex *init_textures(void *mlx_ptr)
 
 void init_clean_path(t_game *game, char **split)
 {
-	char *clean_path;
+	char	*clean_path;
 
 	clean_path = ft_strdup(split[1]);
 	if (ft_strncmp(split[0], "NO", 3) == 0)
@@ -95,36 +112,28 @@ void init_clean_path(t_game *game, char **split)
 	else
 		free(clean_path);
 }
-
 int parse_texture_paths(t_game *game, char *line)
 {
-	char **split;
-	int len;
-	int i;
+	char	*id;
+	char	*path;
+	char	**split;
 
-	split = ft_split(line, ' ');
-	if (!split)
-		return (0);
-	if (!split[1] || has_duplicate_texture(game, split[0]))
+	split = malloc(sizeof(char *) * 2);
+	id = ft_strdup(line);
+	id[2] = '\0';
+	split[0] = id;
+	path = skip_whitespace(line + 2);
+	split[1] = trim_end(ft_strdup(path));
+	if (has_duplicate_texture(game, split[0]))
 	{
-		perror("Error\nInvalid or duplicate texture configuration\n");
-		i = 0;
-		while (split[i])
-			free(split[i++]);
+		free(split[0]);
+		free(split[1]);
 		free(split);
 		return (0);
 	}
-	len = ft_strlen(split[1]);
-	while (len > 0 && (split[1][len - 1] == '\n' ||
-					   split[1][len - 1] == ' ' || split[1][len - 1] == '\r'))
-	{
-		split[1][len - 1] = '\0';
-		len--;
-	}
 	init_clean_path(game, split);
-	i = 0;
-	while (split[i])
-		free(split[i++]);
+	free(split[0]);
+	free(split[1]);
 	free(split);
 	return (1);
 }

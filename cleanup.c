@@ -67,7 +67,7 @@ void	cleanup_game(t_game *game)
 			mlx_destroy_window(game->win->mlx_ptr, game->win->win_ptr);
 		if (game->win->mlx_ptr)
 		{
-			mlx_destroy_display(game->win->mlx_ptr);
+			//mlx_destroy_display(game->win->mlx_ptr);
 			free(game->win->mlx_ptr);
 		}
 	}

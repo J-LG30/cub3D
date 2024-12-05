@@ -6,7 +6,7 @@
 /*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 17:40:24 by jle-goff          #+#    #+#             */
-/*   Updated: 2024/12/05 18:41:56 by jle-goff         ###   ########.fr       */
+/*   Updated: 2024/11/29 19:46:22 by jle-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int is_valid_identifier_format(const char *line)
 {
-	const char *valid_ids[] = {"NO ", "SO ", "WE ", "EA ", "F ", "C ", NULL};
+	const char	*valid_ids[] = {"NO", "SO", "WE", "EA", "F", "C", NULL};
 	int i;
 	int len;
 
@@ -23,11 +23,7 @@ static int is_valid_identifier_format(const char *line)
 	{
 		len = ft_strlen(valid_ids[i]);
 		if (ft_strncmp(line, valid_ids[i], len) == 0)
-		{
-			if (line[len] == ' ' || line[len] == '\t')
-				return (0);
 			return (1);
-		}
 		i++;
 	}
 	return (0);
@@ -67,17 +63,10 @@ void process_ceiling_color(char *line, t_game *game)
 		free(line);
 		exit(1);
 	}
-	if (game->parsed_map)
-	{
-		perror("Map not last in file\n");
-		free(line);
-		handle_exit(game);
-	}
 }
 
-void process_map_line(char *line, char **map_arr, int *i, t_game *game)
+void process_map_line(char *line, char **map_arr, int *i)
 {
-	game->parsed_map = 1;
 	if (line[ft_strlen(line) - 1] == '\n')
 		line[ft_strlen(line) - 1] = '\0';
 	map_arr[*i] = ft_strdup(line);
@@ -87,12 +76,6 @@ void process_map_line(char *line, char **map_arr, int *i, t_game *game)
 
 static void process_texture_line(char *line, t_game *game)
 {
-	if (game->parsed_map)
-	{
-		perror("Map not last in file\n");
-		free(line);
-		handle_exit(game);
-	}
 	if (!line || !game)
 	{
 		perror("Invalid line or game pointer\n");
@@ -119,19 +102,11 @@ void process_line(char *line, t_game *game, char **map_arr, int *i)
 	else if (ft_strncmp(line, "C ", 2) == 0)
 		process_ceiling_color(line, game);
 	else if (line[0] == ' ' || line[0] == '1')
-		process_map_line(line, map_arr, i, game);
-	else if (ft_strncmp(line, "F ", 2) == 0)
+		process_map_line(line, map_arr, i);
+	else if (ft_strncmp(line, "F ", 2) == 0 &&
+			 !parse_color(line, &game->floor_color))
 	{
-		if (!parse_color(line, &game->floor_color))
-		{
-			perror("Error\nInvalid floor color format\n");
-			handle_exit(game);
-		}
-		if (game->parsed_map)
-		{
-			perror("Map not last in file\n");
-			free(line);
-			handle_exit(game);
-		}
+		perror("Error\nInvalid floor color format\n");
+		handle_exit(game);
 	}
 }
