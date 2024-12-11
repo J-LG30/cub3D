@@ -6,7 +6,7 @@
 /*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 15:51:45 by gverissi          #+#    #+#             */
-/*   Updated: 2024/11/25 15:30:23 by jle-goff         ###   ########.fr       */
+/*   Updated: 2024/12/11 15:48:14 by jle-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,12 @@ int check_texture_duplicate(char *line, t_game *game)
 	i = 0;
 	while (i < 4)
 	{
-		if (ft_strncmp(line, textures[i].id, 2) == 0)
+		if (ft_strncmp(skip_whitespace(line), textures[i].id, 2) == 0)
 		{
 			if (++textures[i].count > 1)
 			{
 				perror("Error\nDuplicate texture\n");
+				free(line);
 				handle_exit(game);
 			}
 			return (1);
@@ -112,6 +113,7 @@ void init_clean_path(t_game *game, char **split)
 	else
 		free(clean_path);
 }
+
 int parse_texture_paths(t_game *game, char *line)
 {
 	char	*id;

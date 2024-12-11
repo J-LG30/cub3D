@@ -6,7 +6,7 @@
 /*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 11:42:14 by jle-goff          #+#    #+#             */
-/*   Updated: 2024/12/03 16:57:20 by jle-goff         ###   ########.fr       */
+/*   Updated: 2024/12/11 15:38:31 by jle-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,8 @@ int	check_player(char **map)
 
 	i = 0;
 	player_count = 0;
-	printf("a\n");
 	while (map[i])
 	{
-		printf("b\n");
 		j = 0;
 		while (map[i][j])
 		{
@@ -31,7 +29,6 @@ int	check_player(char **map)
 				|| map[i][j] == 'W' || map[i][j] == 'E')
 			{
 				player_count++;
-				printf("a\n");
 			}
 			j++;
 		}

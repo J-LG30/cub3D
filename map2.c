@@ -6,7 +6,7 @@
 /*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 17:40:24 by jle-goff          #+#    #+#             */
-/*   Updated: 2024/12/11 15:00:21 by jle-goff         ###   ########.fr       */
+/*   Updated: 2024/12/11 15:53:37 by jle-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,18 @@ static int is_valid_line(char *line, t_game *game)
 
 	trimmed = trim_whitespace(line);
 	if (trimmed[0] == '1' || trimmed[0] == ' ')
+	{
 		return (1);
+	}
 	if (trimmed[0] == '\n' || ft_strlen(trimmed) <= 0)
+	{
 		return (1);
+	}
 
 	if (!is_valid_identifier_format(trimmed))
 	{
 		perror("Error\nInvalid identifier format in map file\n");
+		free(line);
 		handle_exit(game);
 	}
 	return (1);
@@ -56,6 +61,7 @@ static int is_valid_line(char *line, t_game *game)
 
 void process_ceiling_color(char *line, t_game *game)
 {
+	printf("CEILING LINE: %s\n", line);
 	if (game->parsed_map)
 	{
 		perror("Map not last in file\n");
@@ -71,12 +77,22 @@ void process_ceiling_color(char *line, t_game *game)
 	}
 }
 
+//choosing how to handle empty spaces in map
 void process_map_line(char *line, char **map_arr, int *i, t_game *game)
 {
+	int	j;
+	
 	game->parsed_map = 1;
 	if (line[ft_strlen(line) - 1] == '\n')
 		line[ft_strlen(line) - 1] = '\0';
-	map_arr[*i] = ft_strdup(line);
+	map_arr[*i] = ft_strdup(trim_whitespace(line));
+	j = 0;
+	while (map_arr[*i][j])
+	{
+		if (map_arr[*i][j] == ' ' || map_arr[*i][j] == '\t')
+			map_arr[*i][j] = '0';
+		j++;
+	}
 	printf("Map line %d: %s\n", *i, map_arr[*i]);
 	(*i)++;
 }
@@ -95,7 +111,9 @@ static void process_texture_line(char *line, t_game *game)
 		return;
 	}
 	if (!parse_texture_paths(game, trim_whitespace(line)))
+	{
 		handle_exit(game);
+	}
 }
 
 void process_line(char *line, t_game *game, char **map_arr, int *i)
@@ -110,17 +128,19 @@ void process_line(char *line, t_game *game, char **map_arr, int *i)
 			 ft_strncmp(line, "WE", 2) == 0 || ft_strncmp(line, "EA", 2) == 0)
 	{
 		perror("Error\nInvalid texture format\n");
+		free(line);
 		handle_exit(game);
 	}
-	else if (ft_strncmp(line, "C ", 2) == 0)
+	else if (ft_strncmp(trim_whitespace(line), "C ", 2) == 0)
 		process_ceiling_color(line, game);
 	else if (line[0] == ' ' || line[0] == '1')
 		process_map_line(line, map_arr, i, game);
-	else if (ft_strncmp(line, "F ", 2) == 0)
+	else if (ft_strncmp(trim_whitespace(line), "F ", 2) == 0)
 	{
 		if (!parse_color(line, &game->floor_color))
 		{
 			perror("Error\nInvalid floor color format\n");
+			free(line);
 			handle_exit(game);
 		}
 		if (game->parsed_map)

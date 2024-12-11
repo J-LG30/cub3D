@@ -6,7 +6,7 @@
 /*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 14:44:34 by rafasant          #+#    #+#             */
-/*   Updated: 2024/12/03 17:02:03 by jle-goff         ###   ########.fr       */
+/*   Updated: 2024/12/11 15:43:12 by jle-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,8 +146,7 @@ void	open_map(char *path, t_game *game)
 	if (!read_map_file(path, game, map_arr))
 	{
 		perror("Map error: ");
-		map_free(map_arr);
-		return ;
+		handle_exit(game);
 	}
 	validate_map(game, map_arr);
 	printf("--- Map opening process complete ---\n\n");
