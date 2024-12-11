@@ -6,7 +6,7 @@
 /*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 17:06:58 by jle-goff          #+#    #+#             */
-/*   Updated: 2024/12/05 18:17:04 by jle-goff         ###   ########.fr       */
+/*   Updated: 2024/12/11 18:38:35 by jle-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ int	check_errors(char **argv, int argc, char *map)
 
 void	finish_game_setup(t_game *game, t_player *player, char *map)
 {
+	game->parsed_map = 0;
 	open_map(map, game);
 	load_textures(game);
 	init_player(game, player);
@@ -65,7 +66,6 @@ int	main(int argc, char **argv)
 	wall = new_sprite(win.mlx_ptr, win.width, win.height);
 	bgd = new_sprite(win.mlx_ptr, win.width, win.height);
 	game.textures = init_textures(win.mlx_ptr);
-	game.parsed_map = 0;
 	if (!game.textures)
 	{
 		perror("Texture initialization failed\n");

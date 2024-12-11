@@ -6,7 +6,7 @@
 /*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 14:55:41 by jle-goff          #+#    #+#             */
-/*   Updated: 2024/11/25 15:13:25 by jle-goff         ###   ########.fr       */
+/*   Updated: 2024/12/11 18:36:41 by jle-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ t_img	*get_texture(t_game *game, t_rayval *rval)
 
 void	draw_wall(t_game *game, t_player *player, t_rayval *rval, int x)
 {
-    t_img   *current_texture;
+	t_img	*current_texture;
 
 	rval->lineheight = (int)(game->win->height / rval->perpwalldist);
 	rval->drawstart = -(rval->lineheight) / 2 + game->win->height / 2;

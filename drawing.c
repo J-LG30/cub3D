@@ -6,7 +6,7 @@
 /*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 15:15:54 by jle-goff          #+#    #+#             */
-/*   Updated: 2024/11/25 15:18:55 by jle-goff         ###   ########.fr       */
+/*   Updated: 2024/12/11 18:38:01 by jle-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ int	draw_floor(t_game *game)
 	}
 	return (0);
 }
-
 
 int	draw_ceiling(t_game *game)
 {

@@ -6,7 +6,7 @@
 /*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 15:51:45 by gverissi          #+#    #+#             */
-/*   Updated: 2024/12/11 15:48:14 by jle-goff         ###   ########.fr       */
+/*   Updated: 2024/12/11 18:43:05 by jle-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ static char	*trim_end(char *str)
 	int	len;
 
 	len = ft_strlen(str);
-	while (len > 0 && (str[len - 1] == ' ' || str[len - 1] == '\t' || str[len - 1] == '\n' || str[len - 1] == '\r'))
+	while (len > 0 && (str[len - 1] == ' ' || str[len - 1] == '\t'
+			|| str[len - 1] == '\n' || str[len - 1] == '\r'))
 		str[--len] = '\0';
 	return (str);
 }
@@ -30,13 +31,13 @@ static char	*skip_whitespace(char *str)
 	return (str);
 }
 
-int check_texture_duplicate(char *line, t_game *game)
+int	check_texture_duplicate(char *line, t_game *game)
 {
 	static t_tex_check	textures[] = {
-		{"NO", 0},
-		{"SO", 0},
-		{"WE", 0},
-		{"EA", 0}};
+	{"NO", 0},
+	{"SO", 0},
+	{"WE", 0},
+	{"EA", 0}};
 	int					i;
 
 	i = 0;
@@ -57,7 +58,7 @@ int check_texture_duplicate(char *line, t_game *game)
 	return (0);
 }
 
-static int has_duplicate_texture(t_game *game, const char *identifier)
+static int	has_duplicate_texture(t_game *game, const char *identifier)
 {
 	if (ft_strncmp(identifier, "NO", 3) == 0 && game->textures->north_path)
 		return (1);
@@ -70,7 +71,7 @@ static int has_duplicate_texture(t_game *game, const char *identifier)
 	return (0);
 }
 
-t_tex *init_textures(void *mlx_ptr)
+t_tex	*init_textures(void *mlx_ptr)
 {
 	t_tex	*tex;
 
@@ -97,7 +98,7 @@ t_tex *init_textures(void *mlx_ptr)
 	return (tex);
 }
 
-void init_clean_path(t_game *game, char **split)
+void	init_clean_path(t_game *game, char **split)
 {
 	char	*clean_path;
 
@@ -114,7 +115,7 @@ void init_clean_path(t_game *game, char **split)
 		free(clean_path);
 }
 
-int parse_texture_paths(t_game *game, char *line)
+int	parse_texture_paths(t_game *game, char *line)
 {
 	char	*id;
 	char	*path;

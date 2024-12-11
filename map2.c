@@ -6,17 +6,17 @@
 /*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 17:40:24 by jle-goff          #+#    #+#             */
-/*   Updated: 2024/12/11 15:53:37 by jle-goff         ###   ########.fr       */
+/*   Updated: 2024/12/11 18:41:46 by jle-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static int is_valid_identifier_format(const char *line)
+static int	is_valid_identifier_format(const char *line)
 {
 	const char	*valid_ids[] = {"NO", "SO", "WE", "EA", "F", "C", NULL};
-	int i;
-	int len;
+	int			i;
+	int			len;
 
 	i = 0;
 	while (valid_ids[i])
@@ -29,16 +29,16 @@ static int is_valid_identifier_format(const char *line)
 	return (0);
 }
 
-static char *trim_whitespace(char *line)
+static char	*trim_whitespace(char *line)
 {
 	while (*line == ' ' || *line == '\t')
 		line++;
 	return (line);
 }
 
-static int is_valid_line(char *line, t_game *game)
+static int	is_valid_line(char *line, t_game *game)
 {
-	char *trimmed;
+	char	*trimmed;
 
 	trimmed = trim_whitespace(line);
 	if (trimmed[0] == '1' || trimmed[0] == ' ')
@@ -49,7 +49,6 @@ static int is_valid_line(char *line, t_game *game)
 	{
 		return (1);
 	}
-
 	if (!is_valid_identifier_format(trimmed))
 	{
 		perror("Error\nInvalid identifier format in map file\n");
@@ -59,7 +58,7 @@ static int is_valid_line(char *line, t_game *game)
 	return (1);
 }
 
-void process_ceiling_color(char *line, t_game *game)
+void	process_ceiling_color(char *line, t_game *game)
 {
 	printf("CEILING LINE: %s\n", line);
 	if (game->parsed_map)
@@ -78,10 +77,10 @@ void process_ceiling_color(char *line, t_game *game)
 }
 
 //choosing how to handle empty spaces in map
-void process_map_line(char *line, char **map_arr, int *i, t_game *game)
+void	process_map_line(char *line, char **map_arr, int *i, t_game *game)
 {
 	int	j;
-	
+
 	game->parsed_map = 1;
 	if (line[ft_strlen(line) - 1] == '\n')
 		line[ft_strlen(line) - 1] = '\0';
@@ -97,7 +96,7 @@ void process_map_line(char *line, char **map_arr, int *i, t_game *game)
 	(*i)++;
 }
 
-static void process_texture_line(char *line, t_game *game)
+static void	process_texture_line(char *line, t_game *game)
 {
 	if (game->parsed_map)
 	{
@@ -108,7 +107,7 @@ static void process_texture_line(char *line, t_game *game)
 	if (!line || !game)
 	{
 		perror("Invalid line or game pointer\n");
-		return;
+		return ;
 	}
 	if (!parse_texture_paths(game, trim_whitespace(line)))
 	{
@@ -116,16 +115,16 @@ static void process_texture_line(char *line, t_game *game)
 	}
 }
 
-void process_line(char *line, t_game *game, char **map_arr, int *i)
+void	process_line(char *line, t_game *game, char **map_arr, int *i)
 {
 	if (!is_valid_line(line, game))
-		return;
+		return ;
 	if (ft_strlen(line) <= 0 || line[0] == '\n')
-		return;
+		return ;
 	if (check_texture_duplicate(line, game))
 		process_texture_line(line, game);
-	else if (ft_strncmp(line, "NO", 2) == 0 || ft_strncmp(line, "SO", 2) == 0 ||
-			 ft_strncmp(line, "WE", 2) == 0 || ft_strncmp(line, "EA", 2) == 0)
+	else if (ft_strncmp(line, "NO", 2) == 0 || ft_strncmp(line, "SO", 2) == 0
+		|| ft_strncmp(line, "WE", 2) == 0 || ft_strncmp(line, "EA", 2) == 0)
 	{
 		perror("Error\nInvalid texture format\n");
 		free(line);
@@ -149,5 +148,5 @@ void process_line(char *line, t_game *game, char **map_arr, int *i)
 			free(line);
 			handle_exit(game);
 		}
-	}		
+	}
 }
