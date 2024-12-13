@@ -6,7 +6,7 @@
 /*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 17:08:08 by jle-goff          #+#    #+#             */
-/*   Updated: 2024/12/11 18:27:00 by jle-goff         ###   ########.fr       */
+/*   Updated: 2024/12/13 12:21:31 by jle-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,5 +185,17 @@ int		check_all_valid_char(char **map);
 int		key_press(int keycode, void *param);
 int		init_window(t_win *win);
 void	init_player(t_game *game, t_player *player);
+
+//map helpers
+int		is_valid_identifier_format(const char *line);
+// static char	*trim_whitespace(char *line);
+int		is_valid_line(char *line, t_game *game);
+
+//texture helpers
+
+char	*trim_end(char *str);
+char	*skip_whitespace(char *str);
+int		check_texture_duplicate(char *line, t_game *game);
+int		has_duplicate_texture(t_game *game, const char *identifier);
 
 #endif

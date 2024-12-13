@@ -6,7 +6,7 @@
 #    By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/21 17:10:34 by jle-goff          #+#    #+#              #
-#    Updated: 2024/11/25 15:25:21 by jle-goff         ###   ########.fr        #
+#    Updated: 2024/12/13 12:23:25 by jle-goff         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,8 @@ endif
 MLX = $(MLX_DIR)/libmlx.a
 
 SRCS = main.c map.c map2.c raycaster.c parser.c parser2.c texture.c color.c cleanup.c \
-	movement.c graphic_helpers.c init.c draw_textures.c drawing.c load_textures.c
+	movement.c graphic_helpers.c init.c draw_textures.c drawing.c load_textures.c map_helpers.c \
+	texture_helpers.c \
 
 OBJS = $(SRCS:.c=.o)
 
