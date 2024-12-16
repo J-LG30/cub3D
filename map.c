@@ -6,7 +6,7 @@
 /*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 14:44:34 by rafasant          #+#    #+#             */
-/*   Updated: 2024/12/16 12:58:00 by jle-goff         ###   ########.fr       */
+/*   Updated: 2024/12/16 13:31:40 by jle-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,11 @@ char	**allocate_map_array(int rows)
 void	validate_map(t_game *game, char **map_arr)
 {
 	printf("\nValidating map...\n");
+	if (!game->parsed_ceiling || !game->parsed_floor)
+	{
+		perror("Missing floor or celing colour!\n");
+		handle_exit(game);
+	}
 	if (!check_enclosed(map_arr))
 	{
 		perror("Error: Map not enclosed!\n");

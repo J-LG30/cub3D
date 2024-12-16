@@ -6,7 +6,7 @@
 /*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 15:23:16 by jle-goff          #+#    #+#             */
-/*   Updated: 2024/12/16 12:33:55 by jle-goff         ###   ########.fr       */
+/*   Updated: 2024/12/16 13:20:39 by jle-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,9 +114,9 @@ void	cast_rays(t_game *game, t_player *player)
 	int			i;
 	t_rayval	*rval;
 
-	if (draw_floor(game) || draw_ceiling(game))
-		return ;
 	i = 0;
+	if (draw_ceiling(game) || draw_floor(game))
+		return ;
 	while (i < game->win->width)
 	{
 		rval = init_rayval(game, player, i);
@@ -128,8 +128,6 @@ void	cast_rays(t_game *game, t_player *player)
 		free(rval);
 		i++;
 	}
-	mlx_put_image_to_window(game->win->mlx_ptr,
-		game->win->win_ptr, game->bgd->img_ptr, 0, 0);
 	mlx_put_image_to_window(game->win->mlx_ptr,
 		game->win->win_ptr, game->wall->img_ptr, 0, 0);
 }

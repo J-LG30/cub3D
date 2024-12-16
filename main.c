@@ -6,7 +6,7 @@
 /*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 17:06:58 by jle-goff          #+#    #+#             */
-/*   Updated: 2024/12/11 18:38:35 by jle-goff         ###   ########.fr       */
+/*   Updated: 2024/12/16 13:25:00 by jle-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ int	check_errors(char **argv, int argc, char *map)
 void	finish_game_setup(t_game *game, t_player *player, char *map)
 {
 	game->parsed_map = 0;
+	game->parsed_ceiling = 0;
+	game->parsed_floor = 0;
 	open_map(map, game);
 	load_textures(game);
 	init_player(game, player);
@@ -50,7 +52,6 @@ int	main(int argc, char **argv)
 {
 	t_win		win;
 	t_player	player;
-	t_img		bgd;
 	t_game		game;
 	t_img		wall;
 
@@ -60,11 +61,8 @@ int	main(int argc, char **argv)
 		exit (1);
 	game.win = &win;
 	game.player = &player;
-	game.bgd = &bgd;
 	game.wall = &wall;
-	bgd.win = &win;
 	wall = new_sprite(win.mlx_ptr, win.width, win.height);
-	bgd = new_sprite(win.mlx_ptr, win.width, win.height);
 	game.textures = init_textures(win.mlx_ptr);
 	if (!game.textures)
 	{

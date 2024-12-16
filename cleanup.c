@@ -6,7 +6,7 @@
 /*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 16:03:14 by gverissi          #+#    #+#             */
-/*   Updated: 2024/12/16 12:31:42 by jle-goff         ###   ########.fr       */
+/*   Updated: 2024/12/16 13:15:22 by jle-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,6 @@ void	cleanup_game(t_game *game)
 	free_map(game);
 	if (game->wall && game->wall->img_ptr)
 		mlx_destroy_image(game->win->mlx_ptr, game->wall->img_ptr);
-	if (game->bgd && game->bgd->img_ptr)
-		mlx_destroy_image(game->win->mlx_ptr, game->bgd->img_ptr);
 	if (game->win)
 	{
 		if (game->win->win_ptr)

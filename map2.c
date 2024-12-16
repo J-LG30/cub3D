@@ -6,7 +6,7 @@
 /*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 17:40:24 by jle-goff          #+#    #+#             */
-/*   Updated: 2024/12/16 12:47:23 by jle-goff         ###   ########.fr       */
+/*   Updated: 2024/12/16 13:29:27 by jle-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,13 @@
 
 void	process_floor_color(char *line, t_game *game)
 {
+	if (game->parsed_floor == 1)
+	{
+		perror("Multiple floor colours\n");
+		free(line);
+		handle_exit(game);
+	}
+	game->parsed_floor = 1;
 	printf("FLOOR LINE: %s\n", line);
 	if (game->parsed_map)
 	{
@@ -32,6 +39,13 @@ void	process_floor_color(char *line, t_game *game)
 
 void	process_ceiling_color(char *line, t_game *game)
 {
+	if (game->parsed_ceiling == 1)
+	{
+		perror("Multiple ceiling colours\n");
+		free(line);
+		handle_exit(game);
+	}
+	game->parsed_ceiling = 1;
 	printf("CEILING LINE: %s\n", line);
 	if (game->parsed_map)
 	{
