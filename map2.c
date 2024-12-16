@@ -6,7 +6,7 @@
 /*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 17:40:24 by jle-goff          #+#    #+#             */
-/*   Updated: 2024/12/13 12:26:52 by jle-goff         ###   ########.fr       */
+/*   Updated: 2024/12/16 12:47:23 by jle-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,6 @@ void	process_line(char *line, t_game *game, char **map_arr, int *i)
 		process_ceiling_color(line, game);
 	else if (ft_strncmp(skip_whitespace(line), "F ", 2) == 0)
 		process_floor_color(line, game);
-	else if (line[0] == ' ' || line[0] == '1')
+	else if (line[0] == ' ' || line[0] == '1' || line[0] == '\t')
 		process_map_line(line, map_arr, i, game);
 }

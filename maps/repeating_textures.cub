@@ -3,6 +3,7 @@ SO ./textures/south_wall.xpm
 EA ./textures/east_wall.xpm
 WE ./textures/west_wall.xpm
 F 40,35,30
+SO ./textures/south_wall.xpm
 C 85,119,136
 
 	1111111111111111111111111

@@ -6,7 +6,7 @@
 /*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 16:48:34 by jle-goff          #+#    #+#             */
-/*   Updated: 2024/11/29 17:31:04 by jle-goff         ###   ########.fr       */
+/*   Updated: 2024/12/16 12:53:53 by jle-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,10 @@ void	init_player(t_game *game, t_player *player)
 	int	j;
 
 	i = 0;
-	while (game->map[i])
+	while (game && game->map[i])
 	{
 		j = 0;
-		while (game->map[i][j] != '\0')
+		while (game->map[i][j])
 		{
 			if (game->map[i][j] == 'N' || game->map[i][j] == 'W' ||
 				game->map[i][j] == 'S' || game->map[i][j] == 'E')

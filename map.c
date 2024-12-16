@@ -6,7 +6,7 @@
 /*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 14:44:34 by rafasant          #+#    #+#             */
-/*   Updated: 2024/12/11 15:43:12 by jle-goff         ###   ########.fr       */
+/*   Updated: 2024/12/16 12:58:00 by jle-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,12 +59,13 @@ int	count_map_rows(char *path)
 	line = get_next_line(map_fd);
 	while (line)
 	{
-		if (line[0] == ' ' || line[0] == '1')
+		if (line[0] == ' ' || line[0] == '1' || line[0] == '\t')
 			rows++;
 		free(line);
 		line = get_next_line(map_fd);
 	}
 	close(map_fd);
+	printf("NUMBER OF ROWS: %i\n", rows);
 	return (rows);
 }
 

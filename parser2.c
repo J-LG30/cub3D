@@ -6,7 +6,7 @@
 /*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 11:42:14 by jle-goff          #+#    #+#             */
-/*   Updated: 2024/12/11 18:16:44 by jle-goff         ###   ########.fr       */
+/*   Updated: 2024/12/16 12:39:47 by jle-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,24 +108,17 @@ int	first_last_all_walls(char **map, int rows)
 	int	i;
 
 	i = 0;
-	printf("firstlst\n");
 	while (map[0][i])
 	{
 		if (map[0][i] != '1')
-		{
-			printf("pikachu\n");
 			return (0);
-		}
 		i++;
 	}
 	i = 0;
 	while (map[rows - 1][i])
 	{
 		if (map[rows - 1][i] != '1')
-		{
-			printf("lugia\n");
 			return (0);
-		}
 		i++;
 	}
 	return (1);

@@ -1,5 +1,5 @@
 NO ./textures/north_wall.xpm
-SO ./textures/south_wall.xpm
+PA ./textures/south_wall.xpm
 EA ./textures/east_wall.xpm
 WE ./textures/west_wall.xpm
 F 40,35,30
