@@ -6,7 +6,7 @@
 /*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 15:23:16 by jle-goff          #+#    #+#             */
-/*   Updated: 2024/11/29 17:30:08 by jle-goff         ###   ########.fr       */
+/*   Updated: 2024/12/16 10:55:08 by jle-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,21 +51,31 @@ t_rayval	*init_rayval(t_game *game, t_player *player, int i)
 	if (rval->raydirx == 0)
 		rval->deltadistx = 1e30;
 	else
-		rval->deltadistx = fabs(1 / rval->raydirx);
+		rval->deltadistx = sqrt(1 + (rval->raydiry * rval->raydiry) / (rval->raydirx * rval->raydirx));
 	if (rval->raydiry == 0)
 		rval->deltadisty = 1e30;
 	else
-		rval->deltadisty = fabs(1 / rval->raydiry);
+		rval->deltadisty = sqrt(1 + (rval->raydirx * rval->raydirx) / (rval->raydiry * rval->raydiry));
 	init_rayval_helper(player, rval);
 	return (rval);
 }
 
-void	calculate_wall_distance(t_rayval *rval)
+void	calculate_wall_distance(t_rayval *rval, t_player *player)
 {
-	if (rval->side == 0)
-		rval->perpwalldist = rval->sidedistx - rval->deltadistx;
-	else
-		rval->perpwalldist = rval->sidedisty - rval->deltadisty;
+	 if (rval->side == 0)
+	 {
+		if (rval->stepx == -1)
+        	rval->perpwalldist = (rval->mapx - player->posx + 1) / rval->raydirx;
+		else
+			rval->perpwalldist = (rval->mapx - player->posx) / rval->raydirx;
+	}
+    else
+	{
+		if (rval->stepy == -1)
+			rval->perpwalldist = (rval->mapy - player->posy + 1) / rval->raydiry;
+		else
+			rval->perpwalldist = (rval->mapy - player->posy) / rval->raydiry;
+	}
 }
 
 void	perform_dda(t_game *game, t_rayval *rval)
@@ -109,7 +119,7 @@ void	cast_rays(t_game *game, t_player *player)
 		if (!rval)
 			return ;
 		perform_dda(game, rval);
-		calculate_wall_distance(rval);
+		calculate_wall_distance(rval, player);
 		draw_wall(game, player, rval, i);
 		free(rval);
 		i++;
