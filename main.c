@@ -6,7 +6,7 @@
 /*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 17:06:58 by jle-goff          #+#    #+#             */
-/*   Updated: 2024/12/16 13:25:00 by jle-goff         ###   ########.fr       */
+/*   Updated: 2024/12/16 14:59:11 by jle-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	check_errors(char **argv, int argc, char *map)
 
 	if (argc != 2 || !argv[0] || !argv[1])
 	{
-		printf("Usage: ./cub3d [Map.cub]\n");
+		printf("Usage: ./cub3D [Map.cub]\n");
 		return (0);
 	}
 	i = 0;

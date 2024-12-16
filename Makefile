@@ -6,11 +6,11 @@
 #    By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/21 17:10:34 by jle-goff          #+#    #+#              #
-#    Updated: 2024/12/13 12:23:25 by jle-goff         ###   ########.fr        #
+#    Updated: 2024/12/16 14:58:47 by jle-goff         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = cub3d
+NAME = cub3D
 CC = @cc
 FLAGS = -Wall -Wextra -Werror -lm
 

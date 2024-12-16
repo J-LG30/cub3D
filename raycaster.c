@@ -6,7 +6,7 @@
 /*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 15:23:16 by jle-goff          #+#    #+#             */
-/*   Updated: 2024/12/16 13:20:39 by jle-goff         ###   ########.fr       */
+/*   Updated: 2024/12/16 14:37:33 by jle-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,21 +64,26 @@ t_rayval	*init_rayval(t_game *game, t_player *player, int i)
 
 void	calculate_wall_distance(t_rayval *rval, t_player *player)
 {
+	float	small_offset;
+
+	small_offset = 1e-6;
 	if (rval->side == 0)
 	{
 		if (rval->stepx == -1)
 			rval->perpwalldist = (rval->mapx - player->posx + 1)
-				/ rval->raydirx;
+				/ rval->raydirx + small_offset;
 		else
-			rval->perpwalldist = (rval->mapx - player->posx) / rval->raydirx;
+			rval->perpwalldist = (rval->mapx - player->posx)
+				/ rval->raydirx + small_offset;
 	}
 	else
 	{
 		if (rval->stepy == -1)
 			rval->perpwalldist = (rval->mapy - player->posy + 1)
-				/ rval->raydiry;
+				/ rval->raydiry + small_offset;
 		else
-			rval->perpwalldist = (rval->mapy - player->posy) / rval->raydiry;
+			rval->perpwalldist = (rval->mapy - player->posy)
+				/ rval->raydiry + small_offset;
 	}
 }
 

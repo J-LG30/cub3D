@@ -6,7 +6,7 @@
 /*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 14:44:34 by rafasant          #+#    #+#             */
-/*   Updated: 2024/12/16 13:31:40 by jle-goff         ###   ########.fr       */
+/*   Updated: 2024/12/16 14:00:38 by jle-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ int	count_map_rows(char *path)
 		line = get_next_line(map_fd);
 	}
 	close(map_fd);
-	printf("NUMBER OF ROWS: %i\n", rows);
 	return (rows);
 }
 
@@ -149,9 +148,9 @@ void	open_map(char *path, t_game *game)
 		return ;
 	}
 	game->map = map_arr;
-	if (!read_map_file(path, game, map_arr))
+	if (!read_map_file(path, game, map_arr) || !map_arr || !map_arr[0])
 	{
-		perror("Map error: ");
+		perror("Unable to parse map");
 		handle_exit(game);
 	}
 	validate_map(game, map_arr);
