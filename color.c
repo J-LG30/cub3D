@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   color.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gverissi <gverissi@42lisboa.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 10:48:43 by jle-goff          #+#    #+#             */
-/*   Updated: 2024/12/17 16:43:09 by jle-goff         ###   ########.fr       */
+/*   Updated: 2024/12/17 18:01:11 by gverissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,7 @@ int	format_valid(char *line)
 		i++;
 	}
 	if (commas != 2)
-	{
-		printf("b\n");
 		return (0);
-	}
 	return (1);
 }
 
@@ -75,7 +72,6 @@ char	**split_rgb(char *line)
 	char	**rgb;
 	int		i;
 
-	printf("SPLIT RGB LINE: %s\n", line);
 	line++;
 	if (*line != ' ' && *line != '\t' && !ft_isdigit(*line))
 	{
@@ -93,10 +89,7 @@ char	**split_rgb(char *line)
 		return (NULL);
 	i = 0;
 	while (rgb[i])
-	{
-		printf("RGB LINE: %s\n", rgb[i]);
 		i++;
-	}
 	if (i != 3)
 	{
 		perror("Failed to split RGB values.\n");

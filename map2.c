@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map2.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gverissi <gverissi@42lisboa.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 17:40:24 by jle-goff          #+#    #+#             */
-/*   Updated: 2024/12/17 17:59:03 by jle-goff         ###   ########.fr       */
+/*   Updated: 2024/12/17 18:02:02 by gverissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,12 @@ void	process_floor_color(char *line, t_game *game)
 		handle_exit(game);
 	}
 	game->parsed_floor = 1;
-	printf("FLOOR LINE: %s\n", line);
 	if (game->parsed_map)
 	{
 		perror("Map not last in file\n");
 		free(line);
 		handle_exit(game);
 	}
-	printf("Processing floor color: %s\n", line);
 	if (!parse_color(skip_whitespace(line), &game->floor_color))
 	{
 		perror("Error\nInvalid floor color format\n");
@@ -46,14 +44,12 @@ void	process_ceiling_color(char *line, t_game *game)
 		handle_exit(game);
 	}
 	game->parsed_ceiling = 1;
-	printf("CEILING LINE: %s\n", line);
 	if (game->parsed_map)
 	{
 		perror("Map not last in file\n");
 		free(line);
 		handle_exit(game);
 	}
-	printf("Processing ceiling color: %s\n", line);
 	if (!parse_color(skip_whitespace(line), &game->ceiling_color))
 	{
 		perror("Error: Invalid ceiling color format\n");
@@ -75,7 +71,6 @@ void	process_map_line(char *line, char **map_arr, int *i, t_game *game)
 	if (line[ft_strlen(line) - 1] == '\n')
 		line[ft_strlen(line) - 1] = '\0';
 	map_arr[*i] = ft_strdup(line);
-	printf("Map line %d: %s\n", *i, map_arr[*i]);
 	(*i)++;
 }
 

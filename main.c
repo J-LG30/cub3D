@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gverissi <gverissi@42lisboa.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 17:06:58 by jle-goff          #+#    #+#             */
-/*   Updated: 2024/12/17 17:56:50 by jle-goff         ###   ########.fr       */
+/*   Updated: 2024/12/17 18:01:34 by gverissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	check_errors(char **argv, int argc, char *map)
 
 	if (argc != 2 || !argv[0] || !argv[1])
 	{
-		printf("Usage: ./cub3D [Map.cub]\n");
+		perror("Usage: ./cub3D [Map.cub]\n");
 		return (0);
 	}
 	i = 0;
@@ -30,7 +30,7 @@ int	check_errors(char **argv, int argc, char *map)
 			&& map[i - 2] == 'u' && map[i - 1] == 'b')
 			return (1);
 	}
-	printf("Error: Map file needs to be of type .cub\n");
+	perror("Error: Map file needs to be of type .cub\n");
 	return (0);
 }
 

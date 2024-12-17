@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gverissi <gverissi@42lisboa.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 14:44:34 by rafasant          #+#    #+#             */
-/*   Updated: 2024/12/16 14:00:38 by jle-goff         ###   ########.fr       */
+/*   Updated: 2024/12/17 18:01:46 by gverissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,6 @@ char	**allocate_map_array(int rows)
 
 void	validate_map(t_game *game, char **map_arr)
 {
-	printf("\nValidating map...\n");
 	if (!game->parsed_ceiling || !game->parsed_floor)
 	{
 		perror("Missing floor or celing colour!\n");
@@ -104,7 +103,6 @@ void	validate_map(t_game *game, char **map_arr)
 		perror("Error: Invalid character in map!\n");
 		handle_exit(game);
 	}
-	printf("Map validation complete\n");
 }
 
 int	read_map_file(char *path, t_game *game, char **map_arr)
@@ -154,5 +152,4 @@ void	open_map(char *path, t_game *game)
 		handle_exit(game);
 	}
 	validate_map(game, map_arr);
-	printf("--- Map opening process complete ---\n\n");
 }
