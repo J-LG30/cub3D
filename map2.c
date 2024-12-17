@@ -6,7 +6,7 @@
 /*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 17:40:24 by jle-goff          #+#    #+#             */
-/*   Updated: 2024/12/16 13:29:27 by jle-goff         ###   ########.fr       */
+/*   Updated: 2024/12/17 12:22:39 by jle-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	process_floor_color(char *line, t_game *game)
 		handle_exit(game);
 	}
 	printf("Processing floor color: %s\n", line);
-	if (!parse_color(line, &game->floor_color))
+	if (!parse_color(skip_whitespace(line), &game->floor_color))
 	{
 		perror("Error\nInvalid floor color format\n");
 		free(line);
@@ -54,9 +54,8 @@ void	process_ceiling_color(char *line, t_game *game)
 		handle_exit(game);
 	}
 	printf("Processing ceiling color: %s\n", line);
-	if (!parse_color(line, &game->ceiling_color))
-	{
-		perror("Error: Invalid ceiling color format\n");
+	if (!parse_color(skip_whitespace, &game->floor_color))
+	{g color format\n");
 		free(line);
 		handle_exit(game);
 	}
@@ -103,6 +102,7 @@ static void	process_texture_line(char *line, t_game *game)
 
 void	process_line(char *line, t_game *game, char **map_arr, int *i)
 {
+	
 	if (!is_valid_line(line, game))
 		return ;
 	if (ft_strlen(line) <= 0 || line[0] == '\n')
@@ -116,9 +116,13 @@ void	process_line(char *line, t_game *game, char **map_arr, int *i)
 		free(line);
 		handle_exit(game);
 	}
-	else if (ft_strncmp(skip_whitespace(line), "C ", 2) == 0)
+	// else if (ft_strncmp(skip_whitespace(line), "C ", 2) == 0)
+	// 	process_ceiling_color(line, game);
+	// else if (ft_strncmp(skip_whitespace(line), "F ", 2) == 0)
+	// 	process_floor_color(line, game);
+	else if ((skip_whitespace(line))[0] == 'C')
 		process_ceiling_color(line, game);
-	else if (ft_strncmp(skip_whitespace(line), "F ", 2) == 0)
+	else if ((skip_whitespace(line))[0] == 'F')
 		process_floor_color(line, game);
 	else if (line[0] == ' ' || line[0] == '1' || line[0] == '\t')
 		process_map_line(line, map_arr, i, game);
