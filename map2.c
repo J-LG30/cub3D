@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map2.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gverissi <gverissi@42lisboa.com>           +#+  +:+       +#+        */
+/*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 17:40:24 by jle-goff          #+#    #+#             */
-/*   Updated: 2024/12/17 13:00:47 by gverissi         ###   ########.fr       */
+/*   Updated: 2024/12/17 15:13:49 by jle-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	process_ceiling_color(char *line, t_game *game)
 		handle_exit(game);
 	}
 	printf("Processing ceiling color: %s\n", line);
-	if (!parse_color(skip_whitespace(line), &game->floor_color))
+	if (!parse_color(skip_whitespace(line), &game->ceiling_color))
 	{
 		perror("Error: Invalid ceiling color format\n");
 		free(line);
@@ -119,21 +119,26 @@ void	process_line(char *line, t_game *game, char **map_arr, int *i)
 		free(line);
 		handle_exit(game);
 	}
-	// else if (ft_strncmp(skip_whitespace(line), "C ", 2) == 0)
-	// 	process_ceiling_color(line, game);
-	// else if (ft_strncmp(skip_whitespace(line), "F ", 2) == 0)
-	// 	process_floor_color(line, game);
-	else if (ft_strchr("CF", skip_whitespace(line)[0])) 
-{
-	cleaned = skip_whitespace(line);
-	type = cleaned[0];
-	new_line = ft_strjoin("C ", cleaned + 1);
-	if (type == 'C')
-		process_ceiling_color(new_line, game);
-	else
-		process_floor_color(new_line, game);	
-	free(new_line);
-}
+	else if (ft_strncmp(skip_whitespace(line), "C ", 2) == 0)
+		process_ceiling_color(line, game);
+	else if (ft_strncmp(skip_whitespace(line), "F ", 2) == 0)
+		process_floor_color(line, game);
+	// else if (ft_strchr("CF", skip_whitespace(line)[0]))
+	// {
+	// 	cleaned = skip_whitespace(line);
+	// 	type = cleaned[0];
+	// 	new_line = ft_strjoin("C ", cleaned + 1);
+	// 	//free(line);
+	// 	if (type == 'C')
+	// 		process_ceiling_color(new_line, game);
+	// 	else
+	// 		process_floor_color(new_line, game);	
+	// 	free(new_line);
+	// }
+	else if (skip_whitespace(line)[0] == 'C')
+		process_ceiling_color(line, game);
+	else if (skip_whitespace(line)[0] == 'F')
+		process_floor_color(line, game);
 	else if (line[0] == ' ' || line[0] == '1' || line[0] == '\t')
 		process_map_line(line, map_arr, i, game);
 }

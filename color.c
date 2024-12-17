@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   color.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gverissi <gverissi@42lisboa.com>           +#+  +:+       +#+        */
+/*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 10:48:43 by jle-goff          #+#    #+#             */
-/*   Updated: 2024/12/17 12:51:28 by gverissi         ###   ########.fr       */
+/*   Updated: 2024/12/17 15:14:06 by jle-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,20 +47,26 @@ static char	**check_split(char **split)
 
 char	**split_rgb(char *line)
 {
-	char	**split;
 	char	**rgb;
 	int		i;
 
-	split = ft_split(line, ' ');
-	if (!check_split(split))
+	printf("SPLIT RGB LINE: %s\n", line);
+	line++;
+	if (*line != ' ' && *line != '\t' && !ft_isdigit(*line))
+	{
+		perror("wrong identifier colour\n");
 		return (NULL);
-	rgb = ft_split(split[1], ',');
-	free_split(split);
+	}
+	line = skip_whitespace(line);
+	rgb = ft_split(line, ',');
 	if (!rgb)
 		return (NULL);
 	i = 0;
 	while (rgb[i])
+	{
+		printf("RGB LINE: %s\n", rgb[i]);
 		i++;
+	}
 	if (i != 3)
 	{
 		perror("Failed to split RGB values.\n");
@@ -68,6 +74,33 @@ char	**split_rgb(char *line)
 	}
 	return (rgb);
 }
+
+// char	**split_rgb(char *line)
+// {
+// 	char	**split;
+// 	char	**rgb;
+// 	int		i;
+
+// 	split = ft_split(line, ' ');
+// 	if (!check_split(split))
+// 		return (NULL);
+// 	rgb = ft_split(split[1], ',');
+// 	free_split(split);
+// 	if (!rgb)
+// 		return (NULL);
+// 	i = 0;
+// 	while (rgb[i])
+// 	{
+// 		printf("RGB LINE: %s\n", rgb[i]);
+// 		i++;
+// 	}
+// 	if (i != 3)
+// 	{
+// 		perror("Failed to split RGB values.\n");
+// 		return (free_split(rgb));
+// 	}
+// 	return (rgb);
+// }
 
 int	parse_color(char *line, t_color *color)
 {
