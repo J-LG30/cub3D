@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   texture.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gverissi <gverissi@42lisboa.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 15:51:45 by gverissi          #+#    #+#             */
-/*   Updated: 2024/12/13 12:10:10 by jle-goff         ###   ########.fr       */
+/*   Updated: 2024/12/17 18:23:50 by gverissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ t_tex	*init_textures(void *mlx_ptr)
 	tex->south_path = NULL;
 	tex->east_path = NULL;
 	tex->west_path = NULL;
-	printf("Texture initialization complete\n");
 	return (tex);
 }
 
