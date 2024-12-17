@@ -6,7 +6,7 @@
 /*   By: gverissi <gverissi@42lisboa.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 10:48:43 by jle-goff          #+#    #+#             */
-/*   Updated: 2024/12/17 18:01:11 by gverissi         ###   ########.fr       */
+/*   Updated: 2024/12/17 18:16:18 by gverissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,45 +45,11 @@ static char	**check_split(char **split)
 	return (split);
 }
 
-int	format_valid(char *line)
-{
-	int	i;
-	int	commas;
-
-	i = 0;
-	commas = 0;
-	while (line[i] == ' ' || line[i] == '\t')
-		i++;
-	while (line[i] && line[i] != '\n')
-	{
-		if (line[i] == ',')
-			commas++;
-		if (line[i] != ',' && !ft_isdigit(line[i]))
-			return (0);
-		i++;
-	}
-	if (commas != 2)
-		return (0);
-	return (1);
-}
-
-char	**split_rgb(char *line)
+static char	**rgb_p(char *line)
 {
 	char	**rgb;
 	int		i;
 
-	line++;
-	if (*line != ' ' && *line != '\t' && !ft_isdigit(*line))
-	{
-		perror("wrong identifier colour\n");
-		return (NULL);
-	}
-	line = skip_whitespace(line);
-	if (!format_valid(line))
-	{
-		perror("Invalid character encountered in colour parsing\n");
-		return (NULL);
-	}
 	rgb = ft_split(line, ',');
 	if (!rgb)
 		return (NULL);
@@ -96,6 +62,23 @@ char	**split_rgb(char *line)
 		return (free_split(rgb));
 	}
 	return (rgb);
+}
+
+char	**split_rgb(char *line)
+{
+	line++;
+	if (*line != ' ' && *line != '\t' && !ft_isdigit(*line))
+	{
+		perror("wrong identifier colour\n");
+		return (NULL);
+	}
+	line = skip_whitespace(line);
+	if (!format_valid(line))
+	{
+		perror("Invalid character encountered in colour parsing\n");
+		return (NULL);
+	}
+	return (rgb_p(line));
 }
 
 // char	**split_rgb(char *line)
@@ -124,32 +107,3 @@ char	**split_rgb(char *line)
 // 	}
 // 	return (rgb);
 // }
-
-int	parse_color(char *line, t_color *color)
-{
-	char	**rgb;
-	int		int_rgb[3];
-	int		i;
-
-	rgb = split_rgb(line);
-	if (!rgb)
-		return (0);
-	int_rgb[0] = ft_atoi(rgb[0]);
-	int_rgb[1] = ft_atoi(rgb[1]);
-	int_rgb[2] = ft_atoi(rgb[2]);
-	i = 0;
-	while (rgb[i])
-		free(rgb[i++]);
-	free(rgb);
-	if (int_rgb[0] < 0 || int_rgb[0] > 255 || int_rgb[1] < 0 || int_rgb[1] > 255
-		|| int_rgb[2] < 0 || int_rgb[2] > 255)
-	{
-		return (0);
-	}
-	if (!color)
-		return (0);
-	color->r = int_rgb[0];
-	color->g = int_rgb[1];
-	color->b = int_rgb[2];
-	return (1);
-}

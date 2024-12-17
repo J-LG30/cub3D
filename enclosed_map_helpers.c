@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   enclosed_map_helpers.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gverissi <gverissi@42lisboa.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 17:29:57 by jle-goff          #+#    #+#             */
-/*   Updated: 2024/12/17 17:48:02 by jle-goff         ###   ########.fr       */
+/*   Updated: 2024/12/17 18:19:51 by gverissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ int	check_top(char **map, int i, int j)
 	}
 	else
 		return (0);
-	//check top_right
 	if (i > 0 && ft_strlen(map[i - 1]) >= j + 1)
 	{
 		if (!is_surrounding_char(map[i - 1][j + 1]))
@@ -29,7 +28,6 @@ int	check_top(char **map, int i, int j)
 	}
 	else
 		return (0);
-	//check top left
 	if (i > 0 && j > 0)
 	{
 		if (!is_surrounding_char(map[i - 1][j - 1]))
@@ -56,7 +54,6 @@ int	check_bottom(char **map, int i, int j)
 	}
 	else
 		return (0);
-	//check bottom left
 	if (map[i + 1] && j > 0)
 	{
 		if (!is_surrounding_char(map[i + 1][j - 1]))

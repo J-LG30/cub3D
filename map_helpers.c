@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_helpers.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gverissi <gverissi@42lisboa.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 12:02:55 by jle-goff          #+#    #+#             */
-/*   Updated: 2024/12/17 17:58:09 by jle-goff         ###   ########.fr       */
+/*   Updated: 2024/12/17 18:04:59 by gverissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	is_valid_line(char *line, t_game *game)
 {
 	char	*trimmed;
 
-	if (line[0] == '\n')
+	if (line[0] == '\n' && game->parsed_map == 1)
 	{
 		game->empty_line = 1;
 		return (0);

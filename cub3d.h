@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gverissi <gverissi@42lisboa.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 17:08:08 by jle-goff          #+#    #+#             */
-/*   Updated: 2024/12/17 17:56:21 by jle-goff         ###   ########.fr       */
+/*   Updated: 2024/12/17 18:18:10 by gverissi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,6 +156,8 @@ int		handle_exit(t_game *game);
 // color stuff
 int		parse_color(char *line, t_color *color);
 int		is_color_line(char *line);
+int		format_valid(char *line);
+char	**split_rgb(char *line);
 // texture stuff
 int		is_texture_line(char *line);
 int		is_texture_char(char c);
