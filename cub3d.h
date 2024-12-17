@@ -6,7 +6,7 @@
 /*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 17:08:08 by jle-goff          #+#    #+#             */
-/*   Updated: 2024/12/16 13:24:25 by jle-goff         ###   ########.fr       */
+/*   Updated: 2024/12/17 17:56:21 by jle-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,6 +147,7 @@ typedef struct s_game
 	int			parsed_map;
 	int			parsed_floor;
 	int			parsed_ceiling;
+	int			empty_line;
 }	t_game;
 
 // cleaning stuff
@@ -192,6 +193,11 @@ void	init_player(t_game *game, t_player *player);
 int		is_valid_identifier_format(const char *line);
 // static char	*trim_whitespace(char *line);
 int		is_valid_line(char *line, t_game *game);
+int		check_top(char **map, int i, int j);
+int		check_bottom(char **map, int i, int j);
+int		check_right(char **map, int i, int j);
+int		check_left(char **map, int i, int j);
+int		is_surrounding_char(char c);
 
 //texture helpers
 

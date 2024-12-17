@@ -6,7 +6,7 @@
 /*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 17:40:24 by jle-goff          #+#    #+#             */
-/*   Updated: 2024/12/17 16:46:13 by jle-goff         ###   ########.fr       */
+/*   Updated: 2024/12/17 17:59:03 by jle-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,19 +65,16 @@ void	process_ceiling_color(char *line, t_game *game)
 //choosing how to handle empty spaces in map
 void	process_map_line(char *line, char **map_arr, int *i, t_game *game)
 {
-	//int	j;
-
 	game->parsed_map = 1;
+	if (game->empty_line == 1)
+	{
+		perror("Empty line inbetween map lines\n");
+		free(line);
+		handle_exit(game);
+	}
 	if (line[ft_strlen(line) - 1] == '\n')
 		line[ft_strlen(line) - 1] = '\0';
 	map_arr[*i] = ft_strdup(line);
-	//j = 0;
-	// while (map_arr[*i][j])
-	// {
-	// 	if (map_arr[*i][j] == ' ' || map_arr[*i][j] == '\t')
-	// 		map_arr[*i][j] = '0';
-	// 	j++;
-	// }
 	printf("Map line %d: %s\n", *i, map_arr[*i]);
 	(*i)++;
 }
@@ -104,8 +101,7 @@ static void	process_texture_line(char *line, t_game *game)
 void	process_line(char *line, t_game *game, char **map_arr, int *i)
 {
 	char	type;
-	char *cleaned;	
-	char *new_line;
+
 	if (!is_valid_line(line, game))
 		return ;
 	if (ft_strlen(line) <= 0 || line[0] == '\n')
@@ -123,18 +119,6 @@ void	process_line(char *line, t_game *game, char **map_arr, int *i)
 		process_ceiling_color(line, game);
 	else if (ft_strncmp(skip_whitespace(line), "F ", 2) == 0)
 		process_floor_color(line, game);
-	// else if (ft_strchr("CF", skip_whitespace(line)[0]))
-	// {
-	// 	cleaned = skip_whitespace(line);
-	// 	type = cleaned[0];
-	// 	new_line = ft_strjoin("C ", cleaned + 1);
-	// 	//free(line);
-	// 	if (type == 'C')
-	// 		process_ceiling_color(new_line, game);
-	// 	else
-	// 		process_floor_color(new_line, game);	
-	// 	free(new_line);
-	// }
 	else if (skip_whitespace(line)[0] == 'C')
 		process_ceiling_color(line, game);
 	else if (skip_whitespace(line)[0] == 'F')

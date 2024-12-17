@@ -6,7 +6,7 @@
 /*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 17:06:58 by jle-goff          #+#    #+#             */
-/*   Updated: 2024/12/17 14:26:46 by jle-goff         ###   ########.fr       */
+/*   Updated: 2024/12/17 17:56:50 by jle-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void	finish_game_setup(t_game *game, t_player *player, char *map)
 	game->parsed_map = 0;
 	game->parsed_ceiling = 0;
 	game->parsed_floor = 0;
+	game->empty_line = 0;
 	open_map(map, game);
 	load_textures(game);
 	init_player(game, player);
