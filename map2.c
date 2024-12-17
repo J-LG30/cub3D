@@ -6,7 +6,7 @@
 /*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 17:40:24 by jle-goff          #+#    #+#             */
-/*   Updated: 2024/12/17 15:13:49 by jle-goff         ###   ########.fr       */
+/*   Updated: 2024/12/17 16:46:13 by jle-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,19 +65,19 @@ void	process_ceiling_color(char *line, t_game *game)
 //choosing how to handle empty spaces in map
 void	process_map_line(char *line, char **map_arr, int *i, t_game *game)
 {
-	int	j;
+	//int	j;
 
 	game->parsed_map = 1;
 	if (line[ft_strlen(line) - 1] == '\n')
 		line[ft_strlen(line) - 1] = '\0';
-	map_arr[*i] = ft_strdup(skip_whitespace(line));
-	j = 0;
-	while (map_arr[*i][j])
-	{
-		if (map_arr[*i][j] == ' ' || map_arr[*i][j] == '\t')
-			map_arr[*i][j] = '0';
-		j++;
-	}
+	map_arr[*i] = ft_strdup(line);
+	//j = 0;
+	// while (map_arr[*i][j])
+	// {
+	// 	if (map_arr[*i][j] == ' ' || map_arr[*i][j] == '\t')
+	// 		map_arr[*i][j] = '0';
+	// 	j++;
+	// }
 	printf("Map line %d: %s\n", *i, map_arr[*i]);
 	(*i)++;
 }

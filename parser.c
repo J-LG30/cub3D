@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gverissi <gverissi@42lisboa.com>           +#+  +:+       +#+        */
+/*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 15:51:37 by gverissi          #+#    #+#             */
-/*   Updated: 2024/11/29 16:49:14 by gverissi         ###   ########.fr       */
+/*   Updated: 2024/12/17 17:09:20 by jle-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	check_all_valid_char(char **map)
 		j = 0;
 		while (map[i][j])
 		{
-			if (!is_valid_char(map[i][j]) && map[i][j] != ' ')
+			if (!is_valid_char(map[i][j]) && map[i][j] != ' ' && map[i][j] != '\t')
 				return (0);
 			j++;
 		}

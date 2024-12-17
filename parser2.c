@@ -6,7 +6,7 @@
 /*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 11:42:14 by jle-goff          #+#    #+#             */
-/*   Updated: 2024/12/16 13:57:57 by jle-goff         ###   ########.fr       */
+/*   Updated: 2024/12/17 17:21:46 by jle-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,22 +167,166 @@ int	draw_border(char **map, int rows)
 	return (1);
 }
 
+// int	check_enclosed(char **map)
+// {
+// 	int	i;
+// 	int	j;
+// 	int	rows;
+
+// 	i = 0;
+// 	j = 0;
+// 	rows = 0;
+// 	while (map[rows])
+// 		rows++;
+// 	if (!first_last_all_walls(map, rows))
+// 		return (0);
+// 	if (!start_finish_wall(map))
+// 		return (0);
+// 	if (!draw_border(map, rows))
+// 		return (0);
+// 	return (1);
+// }
+
+int	is_surrounding_char(char c)
+{
+	if (c == '0' || c == '1' || c == 'N'
+		|| c == 'S' || c == 'W' || c == 'E')
+	{
+		return (1);
+	}
+	return (0);
+}
+int	check_surrounding(char **map, int i, int j)
+{
+	if (i > 0 && ft_strlen(map[i - 1]) >= j)
+	{
+		if (!is_surrounding_char(map[i - 1][j]))
+		{
+			printf("a\n");
+			return (0);
+		}
+	}
+	else
+	{
+		printf("LINE: %s\n", map[i]);
+		printf("w\n");
+		return (0);
+	}
+	if (map[i + 1] && ft_strlen(map[i + 1]) >= j)
+	{
+		if (!is_surrounding_char(map[i + 1][j]))
+		{
+			printf("LINE: %s\n", map[i]);
+			printf(": %c\n", map[i + 1][j]);
+			printf("b\n");
+			return (0);
+		}
+	}
+	else
+	{
+		printf("k\n");
+		return (0);
+	}
+	if (!is_surrounding_char(map[i][j + 1]))
+	{
+		printf("c\n");
+		return (0);
+	}
+	if (j > 0)
+	{
+		if (!is_surrounding_char(map[i][j - 1]))
+			{
+				printf("d\n");
+				return (0);
+			}
+			
+	}
+	else
+	{
+		printf("z\n");
+		return (0);
+	}
+	if (i > 0 && ft_strlen(map[i - 1]) >= j + 1)
+	{
+		if (!is_surrounding_char(map[i - 1][j + 1]))
+		{
+			printf("a\n");
+			return (0);
+		}
+	}
+	else
+	{
+		printf("LINE: %s\n", map[i]);
+		printf("w\n");
+		return (0);
+	}
+	if (i > 0 && j > 0)
+	{
+		if (!is_surrounding_char(map[i - 1][j - 1]))
+		{
+			printf("a\n");
+			return (0);
+		}
+	}
+	else
+	{
+		printf("LINE: %s\n", map[i]);
+		printf("w\n");
+		return (0);
+	}
+	if (map[i + 1] && ft_strlen(map[i + 1]) >= j + 1)
+	{
+		if (!is_surrounding_char(map[i + 1][j + 1]))
+		{
+			printf("LINE: %s\n", map[i]);
+			printf(": %c\n", map[i + 1][j]);
+			printf("b\n");
+			return (0);
+		}
+	}
+	else
+	{
+		printf("k\n");
+		return (0);
+	}
+	
+	if (map[i + 1] && j > 0)
+	{
+		if (!is_surrounding_char(map[i + 1][j - 1]))
+		{
+			printf("b\n");
+			return (0);
+		}
+	}
+	else
+	{
+		printf("k\n");
+		return (0);
+	}
+	
+	
+	return (1);
+}
+
 int	check_enclosed(char **map)
 {
 	int	i;
 	int	j;
-	int	rows;
 
 	i = 0;
-	j = 0;
-	rows = 0;
-	while (map[rows])
-		rows++;
-	if (!first_last_all_walls(map, rows))
-		return (0);
-	if (!start_finish_wall(map))
-		return (0);
-	if (!draw_border(map, rows))
-		return (0);
+	while (map && map[i])
+	{
+		j = 0;
+		while (map[i][j])
+		{
+			if (map[i][j] == '0' || map[i][j] == 'N' || map[i][j] == 'W' || map[i][j] == 'S' || map[i][j] == 'E')
+			{
+				if (!check_surrounding(map, i, j))
+					return (0);
+			}
+			j++;
+		}
+		i++;
+	}
 	return (1);
 }
