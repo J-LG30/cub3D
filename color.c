@@ -6,7 +6,7 @@
 /*   By: jle-goff <jle-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 10:48:43 by jle-goff          #+#    #+#             */
-/*   Updated: 2024/12/17 15:14:06 by jle-goff         ###   ########.fr       */
+/*   Updated: 2024/12/17 15:19:41 by jle-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,31 @@ static char	**check_split(char **split)
 	return (split);
 }
 
+int	format_valid(char *line)
+{
+	int	i;
+	int	commas;
+
+	i = 0;
+	commas = 0;
+	while (line[i] == ' ' || line[i] == '\t')
+		i++;
+	while (line[i] && line[i] != '\n')
+	{
+		if (line[i] == ',')
+			commas++;
+		if (line[i] != ',' && !ft_isdigit(line[i]))
+			return (0);
+		i++;
+	}
+	if (commas != 2)
+	{
+		printf("b\n");
+		return (0);
+	}
+	return (1);
+}
+
 char	**split_rgb(char *line)
 {
 	char	**rgb;
@@ -58,6 +83,11 @@ char	**split_rgb(char *line)
 		return (NULL);
 	}
 	line = skip_whitespace(line);
+	if (!format_valid(line))
+	{
+		perror("Invalid character encountered in colour parsing\n");
+		return (NULL);
+	}
 	rgb = ft_split(line, ',');
 	if (!rgb)
 		return (NULL);
