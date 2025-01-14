@@ -12,7 +12,7 @@ The game uses a simple graphics library called minilibx to display the window an
 
 If on MacOS, minilibx is already in the repository and you're good to go!
 
-If on linux, you need to download [minilibx for linux](#https://github.com/42Paris/minilibx-linux), and simply copy the folder to the root of the repository.
+If on linux, you need to download [minilibx for linux](https://github.com/42Paris/minilibx-linux), and simply copy the folder to the root of the repository.
 Make sure to name the folder "minilibx-linux", or you'll get a compilation error!
 
 ### Installing
@@ -91,4 +91,4 @@ Thanks for playing!
 
 ## Acknowledgments
 
-* Thank you to developer Lode for creating a really comprehensive [explanation](#https://lodev.org/cgtutor/raycasting.html) of a possible way to create a raycaster, this was very informative!
+* Thank you to developer Lode for creating a really comprehensive [explanation](https://lodev.org/cgtutor/raycasting.html) of a possible way to create a raycaster, this was very informative!
