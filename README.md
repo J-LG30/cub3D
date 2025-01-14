@@ -42,7 +42,7 @@ Some ready-made maps are stored in the maps folder in the repo. Most of them are
 That being said, feel free to make your own map. There are just a few rules to follow:
 
 * The map file has to finish with an extension .cub
-* The map file has to contain the path to 4 xpm textures (we have some located in the textures folder) like so:
+* The map file has to contain the path to xpm textures which are what will be displayed on the different game walls,(we have some located in the textures folder) like so:
 
 ```
 NO ./path_to_file/file_NO.xpm
